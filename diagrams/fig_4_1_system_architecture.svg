@@ -1,0 +1,201 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 950" width="1300" height="950">
+  <rect width="1300" height="950" fill="#ffffff" />
+  
+<defs>
+  <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+    <feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.12" flood-color="#0f172a" />
+  </filter>
+  <filter id="glow" x="-10%" y="-10%" width="120%" height="120%">
+    <feDropShadow dx="0" dy="0" stdDeviation="4" flood-opacity="0.25" flood-color="#2563eb" />
+  </filter>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 1 L 10 5 L 0 9 z" fill="#334155" />
+  </marker>
+  <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb" />
+  </marker>
+  <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 1 L 10 5 L 0 9 z" fill="#059669" />
+  </marker>
+  <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 1 L 10 5 L 0 9 z" fill="#dc2626" />
+  </marker>
+  <marker id="include-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 2 L 8 5 L 0 8" fill="none" stroke="#475569" stroke-width="1.5" />
+  </marker>
+</defs>
+
+  
+  <!-- Title Header -->
+  <rect x="50" y="20" width="1200" height="55" rx="8" fill="#1e293b" />
+  <text x="650" y="55" fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="bold" text-anchor="middle">Figure 4.1: Evidence-Aware Brain Tumour Classification System Architecture</text>
+  
+  <!-- Layer 1: Presentation Layer -->
+  <g transform="translate(60, 95)">
+    <rect width="1180" height="150" rx="10" fill="#f8fafc" stroke="#3b82f6" stroke-width="2" filter="url(#shadow)" />
+    <rect width="1180" height="34" rx="10" fill="#2563eb" />
+    <rect y="24" width="1180" height="10" fill="#2563eb" />
+    <text x="30" y="23" fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-size="15" font-weight="bold">1. PRESENTATION LAYER (Streamlit Interactive Web Application)</text>
+    
+    <g transform="translate(25, 45)">
+      <!-- UI Modules -->
+      <rect x="0" y="8" width="205" height="80" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.2" />
+      <text x="102" y="38" fill="#1e40af" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">MRI &amp; Mask Uploader</text>
+      <text x="102" y="60" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">File drag-drop, DICOM/PNG</text>
+      
+      <rect x="230" y="8" width="215" height="80" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.2" />
+      <text x="337" y="38" fill="#1e40af" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">Prediction &amp; Conf View</text>
+      <text x="337" y="60" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">Class probabilities &amp; bar chart</text>
+      
+      <rect x="470" y="8" width="220" height="80" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.2" />
+      <text x="580" y="38" fill="#1e40af" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">Heatmap Overlay Display</text>
+      <text x="580" y="60" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">Grad-CAM overlaid on scan</text>
+      
+      <rect x="715" y="8" width="205" height="80" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.2" />
+      <text x="817" y="38" fill="#1e40af" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">Mask Comparison View</text>
+      <text x="817" y="60" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">Ground truth vs Saliency</text>
+      
+      <rect x="945" y="8" width="185" height="80" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.2" />
+      <text x="1037" y="38" fill="#1e40af" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">Reliability &amp; Report</text>
+      <text x="1037" y="60" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">Status Flag &amp; PDF Export</text>
+    </g>
+  </g>
+  
+  <!-- Inter-layer Arrow 1-2 -->
+  <path d="M 650 245 L 650 275" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)" />
+  <path d="M 660 275 L 660 245" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)" />
+  <text x="735" y="263" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600">User Requests / Visualization Data</text>
+  
+  <!-- Layer 2: Application Layer -->
+  <g transform="translate(60, 275)">
+    <rect width="1180" height="110" rx="10" fill="#f8fafc" stroke="#0ea5e9" stroke-width="2" filter="url(#shadow)" />
+    <rect width="1180" height="34" rx="10" fill="#0284c7" />
+    <rect y="24" width="1180" height="10" fill="#0284c7" />
+    <text x="30" y="23" fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-size="15" font-weight="bold">2. APPLICATION LAYER (Pipeline Controller &amp; Execution Orchestrator)</text>
+    
+    <g transform="translate(45, 45)">
+      <rect x="0" y="5" width="250" height="50" rx="6" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="1.2" />
+      <text x="125" y="35" fill="#0369a1" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">Workflow Coordinator</text>
+      
+      <rect x="280" y="5" width="250" height="50" rx="6" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="1.2" />
+      <text x="405" y="35" fill="#0369a1" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">Configuration Manager</text>
+      
+      <rect x="560" y="5" width="250" height="50" rx="6" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="1.2" />
+      <text x="685" y="35" fill="#0369a1" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">Execution Controller</text>
+      
+      <rect x="840" y="5" width="250" height="50" rx="6" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="1.2" />
+      <text x="965" y="35" fill="#0369a1" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">Logging &amp; Audit Service</text>
+    </g>
+  </g>
+  
+  <!-- Inter-layer Arrow 2-3 -->
+  <path d="M 650 385 L 650 415" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)" />
+  <path d="M 660 415 L 660 385" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)" />
+  <text x="735" y="403" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600">Module Dispatch / Evidence Scores</text>
+  
+  <!-- Layer 3: Analysis Layer -->
+  <g transform="translate(60, 415)">
+    <rect width="1180" height="260" rx="10" fill="#f8fafc" stroke="#10b981" stroke-width="2" filter="url(#shadow)" />
+    <rect width="1180" height="34" rx="10" fill="#059669" />
+    <rect y="24" width="1180" height="10" fill="#059669" />
+    <text x="30" y="23" fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-size="15" font-weight="bold">3. ANALYSIS LAYER (Deep Learning &amp; Evidence Evaluation Engines)</text>
+    
+    <!-- Top Row of Analysis Modules -->
+    <g transform="translate(25, 48)">
+      <rect x="0" y="0" width="265" height="90" rx="6" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1.2" />
+      <text x="132" y="25" fill="#047857" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">Pre-processing Module</text>
+      <text x="132" y="48" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">• Image Resizing &amp; Normalization</text>
+      <text x="132" y="68" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">• Patient-wise Stratified Split</text>
+      
+      <rect x="290" y="0" width="265" height="90" rx="6" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1.2" />
+      <text x="422" y="25" fill="#047857" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">CNN Classifier</text>
+      <text x="422" y="48" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">• Backbone: ResNet50 / DenseNet121</text>
+      <text x="422" y="68" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">• Output: Predicted Class &amp; Confidence</text>
+      
+      <rect x="580" y="0" width="265" height="90" rx="6" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1.2" />
+      <text x="712" y="25" fill="#047857" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">Explanation Generator</text>
+      <text x="712" y="48" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">• Grad-CAM Activation Mapping</text>
+      <text x="712" y="68" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">• Saliency Maps &amp; Heatmap Normalization</text>
+      
+      <rect x="870" y="0" width="260" height="90" rx="6" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1.2" />
+      <text x="1000" y="25" fill="#047857" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">Perturbation Engine</text>
+      <text x="1000" y="48" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">• Controlled Gaussian Noise &amp; Blur</text>
+      <text x="1000" y="68" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">• Contrast Changes &amp; Small Shifts</text>
+    </g>
+    
+    <!-- Bottom Row of Analysis Modules -->
+    <g transform="translate(25, 150)">
+      <rect x="60" y="0" width="310" height="95" rx="6" fill="#f0fdf4" stroke="#86efac" stroke-width="1.2" />
+      <text x="215" y="25" fill="#15803d" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">Localization Evaluator</text>
+      <text x="215" y="48" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">• Heatmap Binarization (Otsu/Threshold)</text>
+      <text x="215" y="68" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">• IoU, Dice Coefficient, Pointing Game</text>
+      <text x="215" y="85" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">• Heatmap Energy inside Expert Mask</text>
+      
+      <rect x="430" y="0" width="310" height="95" rx="6" fill="#f0fdf4" stroke="#86efac" stroke-width="1.2" />
+      <text x="585" y="25" fill="#15803d" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">Stability Evaluator</text>
+      <text x="585" y="48" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">• Re-explain Perturbed MRI Slices</text>
+      <text x="585" y="68" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">• Structural Similarity Index (SSIM)</text>
+      <text x="585" y="85" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">• Spearman Rank Correlation (ρ)</text>
+      
+      <rect x="800" y="0" width="310" height="95" rx="6" fill="#fdf2f8" stroke="#f472b6" stroke-width="1.5" />
+      <text x="955" y="25" fill="#be185d" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">Reliability Analyzer (Core Innovation)</text>
+      <text x="955" y="48" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">• Evidence Fusion (Conf + Loc + Stability)</text>
+      <text x="955" y="68" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">• Reliability Threshold Flagging (Reliable/Unreliable)</text>
+      <text x="955" y="85" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">• AUROC, AUPRC &amp; Risk-Coverage vs Baseline</text>
+    </g>
+  </g>
+  
+  <!-- Inter-layer Arrow 3-4 -->
+  <path d="M 650 675 L 650 705" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)" />
+  <path d="M 660 705 L 660 675" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)" />
+  <text x="735" y="693" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600">Model Weights / Scan Data / Metrics Storage</text>
+  
+  <!-- Layer 4: Data Layer -->
+  <g transform="translate(60, 705)">
+    <rect width="1180" height="185" rx="10" fill="#f8fafc" stroke="#8b5cf6" stroke-width="2" filter="url(#shadow)" />
+    <rect width="1180" height="34" rx="10" fill="#7c3aed" />
+    <rect y="24" width="1180" height="10" fill="#7c3aed" />
+    <text x="30" y="23" fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-size="15" font-weight="bold">4. DATA LAYER (File-Based Storage &amp; Experiment Tracking)</text>
+    
+    <g transform="translate(35, 45)">
+      <!-- Cylinder 1 -->
+      <g transform="translate(0, 0)">
+        <path d="M 0 25 C 0 10, 240 10, 240 25 L 240 100 C 240 115, 0 115, 0 100 Z" fill="#ede9fe" stroke="#a78bfa" stroke-width="1.5" />
+        <ellipse cx="120" cy="25" rx="120" ry="15" fill="#ddd6fe" stroke="#a78bfa" stroke-width="1.5" />
+        <text x="120" y="55" fill="#5b21b6" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">MRI Scans &amp; Masks</text>
+        <text x="120" y="75" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">Cheng (Figshare) 3,064 slices</text>
+        <text x="120" y="92" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">BraTS multi-modal MRI</text>
+      </g>
+      
+      <!-- Cylinder 2 -->
+      <g transform="translate(290, 0)">
+        <path d="M 0 25 C 0 10, 240 10, 240 25 L 240 100 C 240 115, 0 115, 0 100 Z" fill="#ede9fe" stroke="#a78bfa" stroke-width="1.5" />
+        <ellipse cx="120" cy="25" rx="120" ry="15" fill="#ddd6fe" stroke="#a78bfa" stroke-width="1.5" />
+        <text x="120" y="55" fill="#5b21b6" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">Model Checkpoints</text>
+        <text x="120" y="75" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">PyTorch .pt weights</text>
+        <text x="120" y="92" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">Best checkpoint state_dict</text>
+      </g>
+      
+      <!-- Cylinder 3 -->
+      <g transform="translate(580, 0)">
+        <path d="M 0 25 C 0 10, 240 10, 240 25 L 240 100 C 240 115, 0 115, 0 100 Z" fill="#ede9fe" stroke="#a78bfa" stroke-width="1.5" />
+        <ellipse cx="120" cy="25" rx="120" ry="15" fill="#ddd6fe" stroke="#a78bfa" stroke-width="1.5" />
+        <text x="120" y="55" fill="#5b21b6" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">Heatmaps &amp; Maps</text>
+        <text x="120" y="75" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">Binarized / float32 heatmaps</text>
+        <text x="120" y="92" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">Perturbation cache arrays</text>
+      </g>
+      
+      <!-- Cylinder 4 -->
+      <g transform="translate(870, 0)">
+        <path d="M 0 25 C 0 10, 240 10, 240 25 L 240 100 C 240 115, 0 115, 0 100 Z" fill="#ede9fe" stroke="#a78bfa" stroke-width="1.5" />
+        <ellipse cx="120" cy="25" rx="120" ry="15" fill="#ddd6fe" stroke="#a78bfa" stroke-width="1.5" />
+        <text x="120" y="55" fill="#5b21b6" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">Logs &amp; Results DB</text>
+        <text x="120" y="75" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">CSV logs &amp; SQLite database</text>
+        <text x="120" y="92" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">Evaluation summary metrics</text>
+      </g>
+    </g>
+  </g>
+  
+  <!-- Footer Note -->
+  <text x="650" y="925" fill="#64748b" font-family="'Segoe UI', Arial, sans-serif" font-size="12" text-anchor="middle">Layered architecture ensures complete separation of presentation, orchestration, deep learning evidence computation, and data persistence.</text>
+</svg>

@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 750" width="1300" height="750">
+  <rect width="1300" height="750" fill="#ffffff" />
+  
+<defs>
+  <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+    <feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.12" flood-color="#0f172a" />
+  </filter>
+  <filter id="glow" x="-10%" y="-10%" width="120%" height="120%">
+    <feDropShadow dx="0" dy="0" stdDeviation="4" flood-opacity="0.25" flood-color="#2563eb" />
+  </filter>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 1 L 10 5 L 0 9 z" fill="#334155" />
+  </marker>
+  <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb" />
+  </marker>
+  <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 1 L 10 5 L 0 9 z" fill="#059669" />
+  </marker>
+  <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 1 L 10 5 L 0 9 z" fill="#dc2626" />
+  </marker>
+  <marker id="include-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 2 L 8 5 L 0 8" fill="none" stroke="#475569" stroke-width="1.5" />
+  </marker>
+</defs>
+
+  
+  <!-- Header -->
+  <rect x="50" y="25" width="1200" height="55" rx="8" fill="#1e293b" />
+  <text x="650" y="60" fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="bold" text-anchor="middle">Figure 4.2: Data Flow Diagram (DFD Level 0 - Context Level)</text>
+  
+  <!-- External Entity 1: Researcher / ML Student -->
+  <g transform="translate(60, 220)">
+    <rect width="240" height="260" rx="10" fill="#f8fafc" stroke="#2563eb" stroke-width="2" filter="url(#shadow)" />
+    <rect width="240" height="40" rx="10" fill="#2563eb" />
+    <rect y="30" width="240" height="10" fill="#2563eb" />
+    <text x="120" y="26" fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-size="15" font-weight="bold" text-anchor="middle">&lt;&lt;External Entity&gt;&gt;</text>
+    <text x="120" y="70" fill="#1e293b" font-family="'Segoe UI', Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle">Researcher / Student</text>
+    <line x1="20" y1="90" x2="220" y2="90" stroke="#cbd5e1" stroke-width="1.5" />
+    <text x="30" y="125" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="12">• Configures experiments</text>
+    <text x="30" y="155" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="12">• Supplies MRI training dataset</text>
+    <text x="30" y="185" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="12">• Provides expert masks</text>
+    <text x="30" y="215" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="12">• Inspects model benchmarks</text>
+  </g>
+  
+  <!-- Central Process 0.0 -->
+  <g transform="translate(480, 180)">
+    <circle cx="170" cy="170" r="165" fill="#f0fdf4" stroke="#059669" stroke-width="3" filter="url(#shadow)" />
+    <circle cx="170" cy="170" r="152" fill="none" stroke="#10b981" stroke-width="1.5" stroke-dasharray="5,4" />
+    
+    <rect x="70" y="65" width="200" height="32" rx="6" fill="#059669" />
+    <text x="170" y="87" fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">Process 0.0</text>
+    
+    <text x="170" y="145" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="17" font-weight="bold" text-anchor="middle">Evidence-Aware</text>
+    <text x="170" y="175" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="17" font-weight="bold" text-anchor="middle">Brain Tumour Classification</text>
+    <text x="170" y="205" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="17" font-weight="bold" text-anchor="middle">System</text>
+    
+    <line x1="85" y1="225" x2="255" y2="225" stroke="#cbd5e1" stroke-width="1.5" />
+    <text x="170" y="250" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="12" text-anchor="middle">Classification + Grad-CAM</text>
+    <text x="170" y="272" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="12" text-anchor="middle">+ Evidence &amp; Stability Fusion</text>
+  </g>
+  
+  <!-- External Entity 2: Radiologist / Reviewer -->
+  <g transform="translate(1000, 220)">
+    <rect width="240" height="260" rx="10" fill="#f8fafc" stroke="#7c3aed" stroke-width="2" filter="url(#shadow)" />
+    <rect width="240" height="40" rx="10" fill="#7c3aed" />
+    <rect y="30" width="240" height="10" fill="#7c3aed" />
+    <text x="120" y="26" fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-size="15" font-weight="bold" text-anchor="middle">&lt;&lt;External Entity&gt;&gt;</text>
+    <text x="120" y="70" fill="#1e293b" font-family="'Segoe UI', Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle">Radiologist / Reviewer</text>
+    <line x1="20" y1="90" x2="220" y2="90" stroke="#cbd5e1" stroke-width="1.5" />
+    <text x="30" y="125" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="12">• Uploads patient MRI slice</text>
+    <text x="30" y="155" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="12">• Inspects visual heatmaps</text>
+    <text x="30" y="185" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="12">• Reviews reliability flag</text>
+    <text x="30" y="215" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="12">• Flags cases for manual review</text>
+  </g>
+  
+  <!-- Flows between Researcher and System -->
+  <!-- Top flow: Researcher -> System -->
+  <path d="M 300 280 L 485 280" stroke="#2563eb" stroke-width="2.2" marker-end="url(#arrow-blue)" />
+  <rect x="315" y="250" width="160" height="24" rx="4" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1" />
+  <text x="395" y="266" fill="#1e40af" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle">MRI Dataset &amp; Masks</text>
+  
+  <!-- Second flow: Researcher -> System -->
+  <path d="M 300 330 L 485 330" stroke="#2563eb" stroke-width="2.2" marker-end="url(#arrow-blue)" />
+  <rect x="315" y="305" width="160" height="22" rx="4" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1" />
+  <text x="395" y="321" fill="#1e40af" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Model Config &amp; Splits</text>
+  
+  <!-- Third flow: System -> Researcher -->
+  <path d="M 485 410 L 300 410" stroke="#059669" stroke-width="2.2" marker-end="url(#arrow-green)" />
+  <rect x="315" y="385" width="160" height="22" rx="4" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1" />
+  <text x="395" y="401" fill="#065f46" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Trained Model Weights</text>
+  
+  <!-- Fourth flow: System -> Researcher -->
+  <path d="M 485 460 L 300 460" stroke="#059669" stroke-width="2.2" marker-end="url(#arrow-green)" />
+  <rect x="315" y="435" width="160" height="22" rx="4" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1" />
+  <text x="395" y="451" fill="#065f46" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle">AUROC / Error Reports</text>
+  
+  <!-- Flows between Radiologist and System -->
+  <!-- Top flow: Radiologist -> System -->
+  <path d="M 1000 290 L 815 290" stroke="#7c3aed" stroke-width="2.2" marker-end="url(#arrow-blue)" />
+  <rect x="825" y="265" width="165" height="22" rx="4" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="1" />
+  <text x="907" y="281" fill="#6d28d9" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle">MRI Slice &amp; Optional Mask</text>
+  
+  <!-- Second flow: System -> Radiologist -->
+  <path d="M 815 350 L 1000 350" stroke="#059669" stroke-width="2.2" marker-end="url(#arrow-green)" />
+  <rect x="825" y="325" width="165" height="22" rx="4" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1" />
+  <text x="907" y="341" fill="#065f46" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Tumour Class &amp; Confidence</text>
+  
+  <!-- Third flow: System -> Radiologist -->
+  <path d="M 815 410 L 1000 410" stroke="#059669" stroke-width="2.2" marker-end="url(#arrow-green)" />
+  <rect x="825" y="385" width="165" height="22" rx="4" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1" />
+  <text x="907" y="401" fill="#065f46" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Grad-CAM Overlay Map</text>
+  
+  <!-- Fourth flow: System -> Radiologist -->
+  <path d="M 815 470 L 1000 470" stroke="#dc2626" stroke-width="2.2" marker-end="url(#arrow-red)" />
+  <rect x="820" y="445" width="175" height="22" rx="4" fill="#fef2f2" stroke="#fecaca" stroke-width="1" />
+  <text x="907" y="461" fill="#991b1b" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Reliability Flag &amp; Diagnostics</text>
+  
+  <!-- Footer Note -->
+  <text x="650" y="680" fill="#64748b" font-family="'Segoe UI', Arial, sans-serif" font-size="12" text-anchor="middle">Context-level boundary showing external user interactions, model provisioning, and clinical advisory reporting.</text>
+</svg>

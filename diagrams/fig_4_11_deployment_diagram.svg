@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1350 900" width="1350" height="900">
+  <rect width="1350" height="900" fill="#ffffff" />
+  
+<defs>
+  <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+    <feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.12" flood-color="#0f172a" />
+  </filter>
+  <filter id="glow" x="-10%" y="-10%" width="120%" height="120%">
+    <feDropShadow dx="0" dy="0" stdDeviation="4" flood-opacity="0.25" flood-color="#2563eb" />
+  </filter>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 1 L 10 5 L 0 9 z" fill="#334155" />
+  </marker>
+  <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb" />
+  </marker>
+  <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 1 L 10 5 L 0 9 z" fill="#059669" />
+  </marker>
+  <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 1 L 10 5 L 0 9 z" fill="#dc2626" />
+  </marker>
+  <marker id="include-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 2 L 8 5 L 0 8" fill="none" stroke="#475569" stroke-width="1.5" />
+  </marker>
+</defs>
+
+  
+  <!-- Header -->
+  <rect x="50" y="20" width="1250" height="55" rx="8" fill="#1e293b" />
+  <text x="675" y="55" fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="bold" text-anchor="middle">Figure 4.11: UML Deployment Diagram (Physical Node Deployment)</text>
+  
+  <!-- NODE 1: Reviewer Client Device (Top Left) -->
+  <g transform="translate(60, 130)">
+    <!-- 3D Node box -->
+    <path d="M 0 20 L 20 0 L 360 0 L 340 20 Z" fill="#cbd5e1" stroke="#475569" stroke-width="1.5" />
+    <path d="M 360 0 L 360 210 L 340 230 L 340 20 Z" fill="#94a3b8" stroke="#475569" stroke-width="1.5" />
+    <rect x="0" y="20" width="340" height="210" fill="#f8fafc" stroke="#475569" stroke-width="1.5" filter="url(#shadow)" />
+    
+    <text x="170" y="50" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">&lt;&lt;device&gt;&gt;</text>
+    <text x="170" y="72" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="15" font-weight="bold" text-anchor="middle">Client Workstation / Laptop</text>
+    
+    <!-- Nested Execution Environment -->
+    <rect x="25" y="95" width="290" height="110" rx="6" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5" />
+    <text x="170" y="120" fill="#1e40af" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle">&lt;&lt;execution environment&gt;&gt;</text>
+    <text x="170" y="142" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">Web Browser (Chrome / Edge)</text>
+    
+    <!-- Artifact -->
+    <rect x="45" y="155" width="250" height="36" rx="4" fill="#ffffff" stroke="#93c5fd" stroke-width="1" />
+    <text x="170" y="178" fill="#1e40af" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" text-anchor="middle">&lt;&lt;artifact&gt;&gt; Streamlit Client SPA</text>
+  </g>
+  
+  <!-- NODE 2: Application Server Node (Top Right) -->
+  <g transform="translate(760, 110)">
+    <path d="M 0 20 L 20 0 L 520 0 L 500 20 Z" fill="#cbd5e1" stroke="#475569" stroke-width="1.5" />
+    <path d="M 520 0 L 520 280 L 500 300 L 500 20 Z" fill="#94a3b8" stroke="#475569" stroke-width="1.5" />
+    <rect x="0" y="20" width="500" height="280" fill="#f8fafc" stroke="#475569" stroke-width="1.5" filter="url(#shadow)" />
+    
+    <text x="250" y="50" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">&lt;&lt;execution environment&gt;&gt;</text>
+    <text x="250" y="72" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="15" font-weight="bold" text-anchor="middle">Application Server (Python 3.10+ Host)</text>
+    
+    <!-- Artifacts inside App Server -->
+    <rect x="25" y="95" width="450" height="50" rx="6" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="1.2" />
+    <text x="40" y="118" fill="#0369a1" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="bold">&lt;&lt;artifact&gt;&gt; Streamlit Web Server Engine</text>
+    <text x="40" y="135" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11">Hosts interactive portal, widgets, and dynamic UI state</text>
+    
+    <rect x="25" y="160" width="450" height="55" rx="6" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="1.2" />
+    <text x="40" y="183" fill="#0369a1" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="bold">&lt;&lt;artifact&gt;&gt; Pipeline Controller Service</text>
+    <text x="40" y="202" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11">Dispatches tasks to GPU and coordinates evidence fusion</text>
+    
+    <rect x="25" y="230" width="450" height="48" rx="6" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="1.2" />
+    <text x="40" y="253" fill="#0369a1" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="bold">&lt;&lt;artifact&gt;&gt; Evaluation &amp; Scoring Framework</text>
+    <text x="40" y="270" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11">IoU, Dice, Pointing Game, SSIM, Spearman Rank &amp; AUROC</text>
+  </g>
+  
+  <!-- Communication Link 1: Client to App Server -->
+  <line x1="400" y1="210" x2="760" y2="210" stroke="#2563eb" stroke-width="2.5" />
+  <rect x="490" y="180" width="180" height="26" rx="4" fill="#ffffff" stroke="#93c5fd" stroke-width="1" />
+  <text x="580" y="198" fill="#1e40af" font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="bold" text-anchor="middle">HTTP / WebSockets : 8501</text>
+  
+  <!-- NODE 3: GPU Compute Node (Bottom Right) -->
+  <g transform="translate(760, 470)">
+    <path d="M 0 20 L 20 0 L 520 0 L 500 20 Z" fill="#cbd5e1" stroke="#475569" stroke-width="1.5" />
+    <path d="M 520 0 L 520 300 L 500 320 L 500 20 Z" fill="#94a3b8" stroke="#475569" stroke-width="1.5" />
+    <rect x="0" y="20" width="500" height="300" fill="#f8fafc" stroke="#475569" stroke-width="1.5" filter="url(#shadow)" />
+    
+    <text x="250" y="50" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">&lt;&lt;device&gt;&gt;</text>
+    <text x="250" y="72" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="15" font-weight="bold" text-anchor="middle">GPU Compute Server (NVIDIA CUDA Node)</text>
+    
+    <!-- Environment -->
+    <rect x="25" y="95" width="450" height="50" rx="6" fill="#ecfdf5" stroke="#10b981" stroke-width="1.2" />
+    <text x="40" y="118" fill="#047857" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="bold">&lt;&lt;runtime&gt;&gt; PyTorch 2.x &amp; CUDA Drivers</text>
+    <text x="40" y="135" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11">Tensor parallel processing, automatic mixed precision</text>
+    
+    <!-- Artifacts -->
+    <rect x="25" y="160" width="450" height="50" rx="6" fill="#ecfdf5" stroke="#10b981" stroke-width="1.2" />
+    <text x="40" y="183" fill="#047857" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="bold">&lt;&lt;artifact&gt;&gt; ResNet50 / DenseNet121 Deep Classifier</text>
+    <text x="40" y="200" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11">Forward pass inference, feature extractors, softmax confidence</text>
+    
+    <rect x="25" y="225" width="450" height="50" rx="6" fill="#ecfdf5" stroke="#10b981" stroke-width="1.2" />
+    <text x="40" y="248" fill="#047857" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="bold">&lt;&lt;artifact&gt;&gt; Grad-CAM &amp; Perturbation Engine</text>
+    <text x="40" y="265" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11">Gradient backpropagation &amp; multi-pass perturbed heatmaps</text>
+  </g>
+  
+  <!-- Communication Link 2: App Server to GPU Compute -->
+  <line x1="1010" y1="410" x2="1010" y2="470" stroke="#059669" stroke-width="2.5" />
+  <rect x="915" y="425" width="190" height="26" rx="4" fill="#ffffff" stroke="#a7f3d0" stroke-width="1" />
+  <text x="1010" y="443" fill="#047857" font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="bold" text-anchor="middle">PyTorch CUDA API / PCIe</text>
+  
+  <!-- NODE 4: Storage Subsystem (Bottom Left) -->
+  <g transform="translate(60, 470)">
+    <path d="M 0 20 L 20 0 L 520 0 L 500 20 Z" fill="#cbd5e1" stroke="#475569" stroke-width="1.5" />
+    <path d="M 520 0 L 520 300 L 500 320 L 500 20 Z" fill="#94a3b8" stroke="#475569" stroke-width="1.5" />
+    <rect x="0" y="20" width="500" height="300" fill="#f8fafc" stroke="#475569" stroke-width="1.5" filter="url(#shadow)" />
+    
+    <text x="250" y="50" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">&lt;&lt;storage device&gt;&gt;</text>
+    <text x="250" y="72" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="15" font-weight="bold" text-anchor="middle">Local SSD / High-Speed Storage Subsystem</text>
+    
+    <rect x="25" y="95" width="450" height="50" rx="6" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.2" />
+    <text x="40" y="118" fill="#6d28d9" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="bold">&lt;&lt;artifact&gt;&gt; Brain MRI Slices &amp; Expert Masks Store</text>
+    <text x="40" y="135" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11">Figshare CE-T1 (3,064 slices) &amp; BraTS benchmarks</text>
+    
+    <rect x="25" y="160" width="450" height="50" rx="6" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.2" />
+    <text x="40" y="183" fill="#6d28d9" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="bold">&lt;&lt;artifact&gt;&gt; Trained Model Checkpoints (.pth / .pt)</text>
+    <text x="40" y="200" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11">Pre-trained backbones &amp; best validation checkpoint weights</text>
+    
+    <rect x="25" y="225" width="450" height="50" rx="6" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.2" />
+    <text x="40" y="248" fill="#6d28d9" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="bold">&lt;&lt;artifact&gt;&gt; Experiment Results &amp; Audit DB (SQLite / CSV)</text>
+    <text x="40" y="265" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11">Logged prediction histories, stability scores &amp; reliability flags</text>
+  </g>
+  
+  <!-- Communication Link 3: App Server to Storage -->
+  <path d="M 760 350 L 560 520" stroke="#8b5cf6" stroke-width="2.2" />
+  <rect x="580" y="420" width="160" height="26" rx="4" fill="#ffffff" stroke="#ddd6fe" stroke-width="1" />
+  <text x="660" y="438" fill="#6d28d9" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Local File I/O / OS Paths</text>
+  
+  <!-- Communication Link 4: GPU to Storage (weights and dataset) -->
+  <line x1="560" y1="620" x2="760" y2="620" stroke="#8b5cf6" stroke-width="2.2" />
+  <rect x="590" y="605" width="140" height="26" rx="4" fill="#ffffff" stroke="#ddd6fe" stroke-width="1" />
+  <text x="660" y="623" fill="#6d28d9" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Direct Disk I/O (DMA)</text>
+  
+  <!-- Footer Note -->
+  <text x="675" y="855" fill="#64748b" font-family="'Segoe UI', Arial, sans-serif" font-size="12" text-anchor="middle">Deployment architecture can run locally on an AI workstation or inside Google Colab / Kaggle cloud with GPU acceleration.</text>
+</svg>

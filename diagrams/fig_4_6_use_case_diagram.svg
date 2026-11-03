@@ -1,0 +1,187 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1350 900" width="1350" height="900">
+  <rect width="1350" height="900" fill="#ffffff" />
+  
+<defs>
+  <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+    <feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.12" flood-color="#0f172a" />
+  </filter>
+  <filter id="glow" x="-10%" y="-10%" width="120%" height="120%">
+    <feDropShadow dx="0" dy="0" stdDeviation="4" flood-opacity="0.25" flood-color="#2563eb" />
+  </filter>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 1 L 10 5 L 0 9 z" fill="#334155" />
+  </marker>
+  <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb" />
+  </marker>
+  <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 1 L 10 5 L 0 9 z" fill="#059669" />
+  </marker>
+  <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 1 L 10 5 L 0 9 z" fill="#dc2626" />
+  </marker>
+  <marker id="include-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 2 L 8 5 L 0 8" fill="none" stroke="#475569" stroke-width="1.5" />
+  </marker>
+</defs>
+
+  
+  <!-- Header -->
+  <rect x="50" y="20" width="1250" height="55" rx="8" fill="#1e293b" />
+  <text x="675" y="55" fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="bold" text-anchor="middle">Figure 4.6: UML Use Case Diagram</text>
+  
+  <!-- System Boundary -->
+  <rect x="280" y="95" width="790" height="740" rx="12" fill="#f8fafc" stroke="#2563eb" stroke-width="2" filter="url(#shadow)" />
+  <rect x="280" y="95" width="790" height="40" rx="12" fill="#2563eb" />
+  <rect x="280" y="125" width="790" height="10" fill="#2563eb" />
+  <text x="675" y="122" fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-size="15" font-weight="bold" text-anchor="middle">System Boundary: Evidence-Aware Brain Tumour Classification System</text>
+  
+  <!-- Actor 1: Researcher (Left) -->
+  <g transform="translate(60, 320)">
+    <!-- Stick Figure -->
+    <circle cx="70" cy="40" r="22" fill="#eff6ff" stroke="#1e40af" stroke-width="2.5" />
+    <line x1="70" y1="62" x2="70" y2="130" stroke="#1e40af" stroke-width="2.5" />
+    <line x1="25" y1="85" x2="115" y2="85" stroke="#1e40af" stroke-width="2.5" />
+    <line x1="70" y1="130" x2="35" y2="190" stroke="#1e40af" stroke-width="2.5" />
+    <line x1="70" y1="130" x2="105" y2="190" stroke="#1e40af" stroke-width="2.5" />
+    <text x="70" y="225" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="15" font-weight="bold" text-anchor="middle">Researcher /</text>
+    <text x="70" y="245" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="15" font-weight="bold" text-anchor="middle">Student</text>
+  </g>
+  
+  <!-- Actor 2: Radiologist / Reviewer (Right) -->
+  <g transform="translate(1150, 320)">
+    <!-- Stick Figure -->
+    <circle cx="70" cy="40" r="22" fill="#fdf4ff" stroke="#701a75" stroke-width="2.5" />
+    <line x1="70" y1="62" x2="70" y2="130" stroke="#701a75" stroke-width="2.5" />
+    <line x1="25" y1="85" x2="115" y2="85" stroke="#701a75" stroke-width="2.5" />
+    <line x1="70" y1="130" x2="35" y2="190" stroke="#701a75" stroke-width="2.5" />
+    <line x1="70" y1="130" x2="105" y2="190" stroke="#701a75" stroke-width="2.5" />
+    <text x="70" y="225" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="15" font-weight="bold" text-anchor="middle">Radiologist /</text>
+    <text x="70" y="245" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="15" font-weight="bold" text-anchor="middle">Reviewer</text>
+  </g>
+  
+  <!-- Use Cases Inside Boundary -->
+  <!-- UC1: Load dataset and masks (Researcher) -->
+  <g transform="translate(340, 160)">
+    <ellipse cx="110" cy="30" rx="100" ry="28" fill="#ffffff" stroke="#0284c7" stroke-width="1.8" filter="url(#shadow)" />
+    <text x="110" y="35" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" text-anchor="middle">Load Dataset &amp; Masks</text>
+  </g>
+  
+  <!-- UC2: Train classifier (Researcher) -->
+  <g transform="translate(340, 240)">
+    <ellipse cx="110" cy="30" rx="100" ry="28" fill="#ffffff" stroke="#0284c7" stroke-width="1.8" filter="url(#shadow)" />
+    <text x="110" y="35" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" text-anchor="middle">Train Classifier</text>
+  </g>
+  
+  <!-- UC3: Evaluate localization and stability (Researcher) -->
+  <g transform="translate(330, 325)">
+    <ellipse cx="120" cy="35" rx="115" ry="32" fill="#eff6ff" stroke="#2563eb" stroke-width="2" filter="url(#shadow)" />
+    <text x="120" y="33" fill="#1e40af" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle">Evaluate Localization</text>
+    <text x="120" y="50" fill="#1e40af" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle">&amp; Stability</text>
+  </g>
+  
+  <!-- UC4: Compare with confidence baseline (Researcher) -->
+  <g transform="translate(340, 420)">
+    <ellipse cx="110" cy="32" rx="105" ry="30" fill="#ffffff" stroke="#0284c7" stroke-width="1.8" filter="url(#shadow)" />
+    <text x="110" y="30" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" text-anchor="middle">Compare with Confidence</text>
+    <text x="110" y="47" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" text-anchor="middle">Baseline (AUROC/AUPRC)</text>
+  </g>
+  
+  <!-- INCLUDED USE CASES IN CENTER -->
+  <!-- UC_INC1: Generate visual explanation -->
+  <g transform="translate(620, 275)">
+    <ellipse cx="120" cy="32" rx="115" ry="30" fill="#f0fdf4" stroke="#10b981" stroke-width="1.8" stroke-dasharray="4,2" filter="url(#shadow)" />
+    <text x="120" y="28" fill="#047857" font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="bold" text-anchor="middle">&lt;&lt;include&gt;&gt;</text>
+    <text x="120" y="46" fill="#065f46" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" text-anchor="middle">Generate Visual Explanation</text>
+  </g>
+  
+  <!-- UC_INC2: Perturb input and re-explain -->
+  <g transform="translate(620, 365)">
+    <ellipse cx="120" cy="32" rx="115" ry="30" fill="#f0fdf4" stroke="#10b981" stroke-width="1.8" stroke-dasharray="4,2" filter="url(#shadow)" />
+    <text x="120" y="28" fill="#047857" font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="bold" text-anchor="middle">&lt;&lt;include&gt;&gt;</text>
+    <text x="120" y="46" fill="#065f46" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" text-anchor="middle">Perturb Input &amp; Re-explain</text>
+  </g>
+  
+  <!-- UC_INC3: Pre-process MRI -->
+  <g transform="translate(620, 520)">
+    <ellipse cx="120" cy="30" rx="110" ry="28" fill="#f0fdf4" stroke="#10b981" stroke-width="1.8" stroke-dasharray="4,2" filter="url(#shadow)" />
+    <text x="120" y="26" fill="#047857" font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="bold" text-anchor="middle">&lt;&lt;include&gt;&gt;</text>
+    <text x="120" y="44" fill="#065f46" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" text-anchor="middle">Pre-process MRI</text>
+  </g>
+  
+  <!-- UC_INC4: Estimate reliability score -->
+  <g transform="translate(620, 680)">
+    <ellipse cx="120" cy="32" rx="115" ry="30" fill="#fdf2f8" stroke="#db2777" stroke-width="1.8" stroke-dasharray="4,2" filter="url(#shadow)" />
+    <text x="120" y="28" fill="#9d174d" font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="bold" text-anchor="middle">&lt;&lt;include&gt;&gt;</text>
+    <text x="120" y="46" fill="#9d174d" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" text-anchor="middle">Estimate Reliability Score</text>
+  </g>
+  
+  <!-- RADIOLOGIST / REVIEWER USE CASES (Right) -->
+  <!-- UC5: Upload MRI -->
+  <g transform="translate(820, 440)">
+    <ellipse cx="105" cy="30" rx="100" ry="28" fill="#ffffff" stroke="#7c3aed" stroke-width="1.8" filter="url(#shadow)" />
+    <text x="105" y="35" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" text-anchor="middle">Upload MRI Scan</text>
+  </g>
+  
+  <!-- UC6: Classify tumour -->
+  <g transform="translate(820, 520)">
+    <ellipse cx="105" cy="30" rx="100" ry="28" fill="#ffffff" stroke="#7c3aed" stroke-width="1.8" filter="url(#shadow)" />
+    <text x="105" y="35" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" text-anchor="middle">Classify Tumour</text>
+  </g>
+  
+  <!-- UC7: View explanation overlay -->
+  <g transform="translate(820, 600)">
+    <ellipse cx="105" cy="30" rx="100" ry="28" fill="#ffffff" stroke="#7c3aed" stroke-width="1.8" filter="url(#shadow)" />
+    <text x="105" y="35" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" text-anchor="middle">View Explanation Overlay</text>
+  </g>
+  
+  <!-- UC8: View reliability flag -->
+  <g transform="translate(820, 680)">
+    <ellipse cx="105" cy="30" rx="100" ry="28" fill="#fdf2f8" stroke="#db2777" stroke-width="2" filter="url(#shadow)" />
+    <text x="105" y="35" fill="#9d174d" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle">View Reliability Flag</text>
+  </g>
+  
+  <!-- UC9: Download Report -->
+  <g transform="translate(820, 760)">
+    <ellipse cx="105" cy="28" rx="100" ry="26" fill="#ffffff" stroke="#7c3aed" stroke-width="1.8" filter="url(#shadow)" />
+    <text x="105" y="33" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="12" font-weight="600" text-anchor="middle">Export Analysis Report</text>
+  </g>
+  
+  <!-- ACTOR ASSOCIATIONS -->
+  <!-- Researcher associations -->
+  <line x1="175" y1="360" x2="340" y2="190" stroke="#334155" stroke-width="1.8" />
+  <line x1="175" y1="375" x2="340" y2="270" stroke="#334155" stroke-width="1.8" />
+  <line x1="175" y1="390" x2="330" y2="360" stroke="#334155" stroke-width="2" />
+  <line x1="175" y1="410" x2="340" y2="450" stroke="#334155" stroke-width="1.8" />
+  
+  <!-- Radiologist associations -->
+  <line x1="1150" y1="380" x2="1025" y2="470" stroke="#334155" stroke-width="1.8" />
+  <line x1="1150" y1="395" x2="1025" y2="550" stroke="#334155" stroke-width="1.8" />
+  <line x1="1150" y1="415" x2="1025" y2="630" stroke="#334155" stroke-width="1.8" />
+  <line x1="1150" y1="435" x2="1025" y2="710" stroke="#334155" stroke-width="2" />
+  <line x1="1150" y1="455" x2="1025" y2="790" stroke="#334155" stroke-width="1.8" />
+  
+  <!-- INCLUDE DEPENDENCY ARROWS (dashed with arrow) -->
+  <!-- UC3 -> Generate explanation -->
+  <path d="M 540 335 L 625 320" stroke="#475569" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#include-arrow)" />
+  <text x="580" y="315" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="10" font-style="italic">«include»</text>
+  
+  <!-- UC3 -> Perturb input -->
+  <path d="M 545 370 L 625 385" stroke="#475569" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#include-arrow)" />
+  <text x="575" y="392" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="10" font-style="italic">«include»</text>
+  
+  <!-- UC6 (Classify) -> Pre-process MRI -->
+  <path d="M 820 550 L 740 550" stroke="#475569" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#include-arrow)" />
+  <text x="775" y="542" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="10" font-style="italic">«include»</text>
+  
+  <!-- UC7 (View Explanation) -> Generate explanation -->
+  <path d="M 845 605 C 780 570, 750 420, 740 340" fill="none" stroke="#475569" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#include-arrow)" />
+  <text x="785" y="470" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="10" font-style="italic">«include»</text>
+  
+  <!-- UC8 (View Flag) -> Estimate reliability score -->
+  <path d="M 820 710 L 740 710" stroke="#475569" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#include-arrow)" />
+  <text x="775" y="702" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="10" font-style="italic">«include»</text>
+  
+  <!-- Footer Note -->
+  <text x="675" y="865" fill="#64748b" font-family="'Segoe UI', Arial, sans-serif" font-size="12" text-anchor="middle">Standard UML Use Case model demonstrating primary clinical and research actors, operational boundaries, and modular inclusions.</text>
+</svg>

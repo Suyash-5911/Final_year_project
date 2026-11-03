@@ -1,0 +1,255 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1450 1150" width="1450" height="1150">
+  <rect width="1450" height="1150" fill="#ffffff" />
+  
+<defs>
+  <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+    <feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.12" flood-color="#0f172a" />
+  </filter>
+  <filter id="glow" x="-10%" y="-10%" width="120%" height="120%">
+    <feDropShadow dx="0" dy="0" stdDeviation="4" flood-opacity="0.25" flood-color="#2563eb" />
+  </filter>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 1 L 10 5 L 0 9 z" fill="#334155" />
+  </marker>
+  <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb" />
+  </marker>
+  <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 1 L 10 5 L 0 9 z" fill="#059669" />
+  </marker>
+  <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 1 L 10 5 L 0 9 z" fill="#dc2626" />
+  </marker>
+  <marker id="include-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 2 L 8 5 L 0 8" fill="none" stroke="#475569" stroke-width="1.5" />
+  </marker>
+</defs>
+
+  
+  <!-- Header -->
+  <rect x="50" y="20" width="1350" height="55" rx="8" fill="#1e293b" />
+  <text x="725" y="55" fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="bold" text-anchor="middle">Figure 4.8: UML Class Diagram (Detailed Object-Oriented Design)</text>
+  
+  <!-- ROW 1: DatasetLoader -> Preprocessor -> TumourClassifier -->
+  <!-- Class 1: DatasetLoader -->
+  <g transform="translate(60, 110)">
+    <rect width="360" height="230" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2" filter="url(#shadow)" />
+    <rect width="360" height="35" rx="8" fill="#2563eb" />
+    <rect y="25" width="360" height="10" fill="#2563eb" />
+    <text x="180" y="24" fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">DatasetLoader</text>
+    
+    <!-- Attributes -->
+    <text x="15" y="58" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- dataset_dir: str</text>
+    <text x="15" y="78" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- patient_splits: dict[str, list]</text>
+    <text x="15" y="98" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- batch_size: int = 32</text>
+    <text x="15" y="118" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- image_mask_pairs: list[tuple]</text>
+    
+    <line x1="0" y1="130" x2="360" y2="130" stroke="#cbd5e1" stroke-width="1.2" />
+    
+    <!-- Methods -->
+    <text x="15" y="152" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ load_slices_and_masks(): list</text>
+    <text x="15" y="174" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ get_patient_stratified_split(): tuple</text>
+    <text x="15" y="196" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ verify_mask_alignment(): bool</text>
+    <text x="15" y="218" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ get_data_loader(split: str): DataLoader</text>
+  </g>
+  
+  <!-- Class 2: Preprocessor -->
+  <g transform="translate(540, 110)">
+    <rect width="360" height="230" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2" filter="url(#shadow)" />
+    <rect width="360" height="35" rx="8" fill="#2563eb" />
+    <rect y="25" width="360" height="10" fill="#2563eb" />
+    <text x="180" y="24" fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">Preprocessor</text>
+    
+    <text x="15" y="58" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- target_size: tuple[int, int] = (224, 224)</text>
+    <text x="15" y="78" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- norm_mean: list[float] = [0.485, ...]</text>
+    <text x="15" y="98" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- norm_std: list[float] = [0.229, ...]</text>
+    <text x="15" y="118" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- intensity_range: tuple[float, float]</text>
+    
+    <line x1="0" y1="130" x2="360" y2="130" stroke="#cbd5e1" stroke-width="1.2" />
+    
+    <text x="15" y="152" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ resize(img: np.ndarray): np.ndarray</text>
+    <text x="15" y="174" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ normalize_intensity(img): Tensor</text>
+    <text x="15" y="196" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ synchronized_augment(img, mask): tuple</text>
+    <text x="15" y="218" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ to_tensor(img: np.ndarray): Tensor</text>
+  </g>
+  
+  <!-- Class 3: TumourClassifier -->
+  <g transform="translate(1020, 110)">
+    <rect width="370" height="230" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="2" filter="url(#shadow)" />
+    <rect width="370" height="35" rx="8" fill="#2563eb" />
+    <rect y="25" width="370" height="10" fill="#2563eb" />
+    <text x="185" y="24" fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">TumourClassifier</text>
+    
+    <text x="15" y="58" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- backbone: str = "resnet50"</text>
+    <text x="15" y="78" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- num_classes: int = 3</text>
+    <text x="15" y="98" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- class_names: list[str] = [gli, men, pit]</text>
+    <text x="15" y="118" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- weights_path: str</text>
+    
+    <line x1="0" y1="130" x2="370" y2="130" stroke="#cbd5e1" stroke-width="1.2" />
+    
+    <text x="15" y="152" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ forward(x: Tensor): Tensor</text>
+    <text x="15" y="174" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ predict(x: Tensor): tuple[str, float]</text>
+    <text x="15" y="196" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ compute_loss(logits, targets): Tensor</text>
+    <text x="15" y="218" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ get_target_layer_activations(): Tensor</text>
+  </g>
+  
+  <!-- Connector R1: DatasetLoader -> Preprocessor -->
+  <path d="M 420 220 L 540 220" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)" />
+  <text x="480" y="210" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">feeds</text>
+  
+  <!-- Connector R2: Preprocessor -> TumourClassifier -->
+  <path d="M 900 220 L 1020 220" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)" />
+  <text x="960" y="210" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">provides x'</text>
+  
+  <!-- ROW 2: ExplanationGenerator & Perturbation -->
+  <!-- Class 4: ExplanationGenerator -->
+  <g transform="translate(1020, 420)">
+    <rect width="370" height="230" rx="8" fill="#ffffff" stroke="#0ea5e9" stroke-width="2" filter="url(#shadow)" />
+    <rect width="370" height="35" rx="8" fill="#0284c7" />
+    <rect y="25" width="370" height="10" fill="#0284c7" />
+    <text x="185" y="24" fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">ExplanationGenerator</text>
+    
+    <text x="15" y="58" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- target_layer: str = "layer4[-1]"</text>
+    <text x="15" y="78" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- method: str = "Grad-CAM"</text>
+    <text x="15" y="98" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- colormap: str = "jet"</text>
+    <text x="15" y="118" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- gradients: Tensor</text>
+    
+    <line x1="0" y1="130" x2="370" y2="130" stroke="#cbd5e1" stroke-width="1.2" />
+    
+    <text x="15" y="152" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ generate_cam(img: Tensor, cls: int): Array</text>
+    <text x="15" y="174" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ extract_gradients(): void</text>
+    <text x="15" y="196" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ overlay_on_image(img, cam): np.ndarray</text>
+    <text x="15" y="218" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ normalize_heatmap(cam: Array): Array</text>
+  </g>
+  
+  <!-- Class 5: Perturbation -->
+  <g transform="translate(60, 420)">
+    <rect width="360" height="230" rx="8" fill="#ffffff" stroke="#c026d3" stroke-width="2" filter="url(#shadow)" />
+    <rect width="360" height="35" rx="8" fill="#a21caf" />
+    <rect y="25" width="360" height="10" fill="#a21caf" />
+    <text x="180" y="24" fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">Perturbation</text>
+    
+    <text x="15" y="58" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- noise_stds: list[float] = [0.01, 0.05]</text>
+    <text x="15" y="78" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- blur_radii: list[float] = [1.0, 2.0]</text>
+    <text x="15" y="98" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- contrast_ranges: tuple[float, float]</text>
+    <text x="15" y="118" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- max_shift_px: int = 3</text>
+    
+    <line x1="0" y1="130" x2="360" y2="130" stroke="#cbd5e1" stroke-width="1.2" />
+    
+    <text x="15" y="152" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ add_gaussian_noise(img, std): Tensor</text>
+    <text x="15" y="174" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ apply_gaussian_blur(img, radius): Tensor</text>
+    <text x="15" y="196" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ alter_brightness_contrast(img): Tensor</text>
+    <text x="15" y="218" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ generate_perturbation_suite(img): list</text>
+  </g>
+  
+  <!-- Connector: ExplanationGenerator uses TumourClassifier -->
+  <path d="M 1205 340 L 1205 420" stroke="#334155" stroke-width="1.8" stroke-dasharray="4,3" marker-end="url(#arrow)" />
+  <text x="1235" y="380" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11">uses</text>
+  
+  <!-- ROW 3: LocalizationEvaluator & StabilityEvaluator -->
+  <!-- Class 6: LocalizationEvaluator -->
+  <g transform="translate(1020, 730)">
+    <rect width="370" height="230" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" filter="url(#shadow)" />
+    <rect width="370" height="35" rx="8" fill="#059669" />
+    <rect y="25" width="370" height="10" fill="#059669" />
+    <text x="185" y="24" fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">LocalizationEvaluator</text>
+    
+    <text x="15" y="58" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- binarize_threshold: float = 0.5</text>
+    <text x="15" y="78" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- binarize_strategy: str = "otsu"</text>
+    <text x="15" y="98" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- current_mask: np.ndarray</text>
+    <text x="15" y="118" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- score_cache: dict[str, float]</text>
+    
+    <line x1="0" y1="130" x2="370" y2="130" stroke="#cbd5e1" stroke-width="1.2" />
+    
+    <text x="15" y="152" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ binarize_heatmap(cam: Array): Array</text>
+    <text x="15" y="174" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ compute_iou(cam_bin, mask): float</text>
+    <text x="15" y="196" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ compute_dice(cam_bin, mask): float</text>
+    <text x="15" y="218" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ pointing_game_and_energy(cam, mask): dict</text>
+  </g>
+  
+  <!-- Class 7: StabilityEvaluator -->
+  <g transform="translate(60, 730)">
+    <rect width="360" height="230" rx="8" fill="#ffffff" stroke="#c026d3" stroke-width="2" filter="url(#shadow)" />
+    <rect width="360" height="35" rx="8" fill="#a21caf" />
+    <rect y="25" width="360" height="10" fill="#a21caf" />
+    <text x="180" y="24" fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">StabilityEvaluator</text>
+    
+    <text x="15" y="58" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- num_perturbations: int = 5</text>
+    <text x="15" y="78" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- ssim_window_size: int = 7</text>
+    <text x="15" y="98" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- orig_heatmap: np.ndarray</text>
+    <text x="15" y="118" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- perturbed_heatmaps: list[np.ndarray]</text>
+    
+    <line x1="0" y1="130" x2="360" y2="130" stroke="#cbd5e1" stroke-width="1.2" />
+    
+    <text x="15" y="152" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ evaluate_stability(h, [hk]): tuple</text>
+    <text x="15" y="174" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ compute_pairwise_ssim(h1, h2): float</text>
+    <text x="15" y="196" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ compute_spearman_rank(h1, h2): float</text>
+    <text x="15" y="218" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ aggregate_stability_metrics(): dict</text>
+  </g>
+  
+  <!-- Connector: StabilityEvaluator uses Perturbation -->
+  <path d="M 240 650 L 240 730" stroke="#334155" stroke-width="1.8" stroke-dasharray="4,3" marker-end="url(#arrow)" />
+  <text x="265" y="690" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11">uses</text>
+  
+  <!-- Connector: ExplanationGenerator -> LocalizationEvaluator -->
+  <path d="M 1205 650 L 1205 730" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)" />
+  <text x="1235" y="690" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11">supplies h</text>
+  
+  <!-- Connector: ExplanationGenerator -> StabilityEvaluator -->
+  <path d="M 1020 540 C 700 540, 500 680, 420 780" fill="none" stroke="#334155" stroke-width="1.8" marker-end="url(#arrow)" />
+  <text x="690" y="590" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11" text-anchor="middle">supplies original &amp; perturbed cams</text>
+  
+  <!-- ROW 4 / CENTER: ReliabilityAnalyzer -->
+  <!-- Class 8: ReliabilityAnalyzer -->
+  <g transform="translate(530, 560)">
+    <rect width="380" height="260" rx="8" fill="#ffffff" stroke="#db2777" stroke-width="2.5" filter="url(#shadow)" />
+    <rect width="380" height="35" rx="8" fill="#be185d" />
+    <rect y="25" width="380" height="10" fill="#be185d" />
+    <text x="190" y="24" fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">ReliabilityAnalyzer</text>
+    
+    <text x="15" y="58" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- reliability_threshold: float = 0.70</text>
+    <text x="15" y="78" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- weights: dict[str, float]</text>
+    <text x="15" y="98" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- baseline_type: str = "confidence_only"</text>
+    <text x="15" y="118" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- audit_history: list[dict]</text>
+    
+    <line x1="0" y1="130" x2="380" y2="130" stroke="#cbd5e1" stroke-width="1.2" />
+    
+    <text x="15" y="152" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ fuse_evidence(conf, loc, stab): float</text>
+    <text x="15" y="174" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ assign_reliability_flag(score): str</text>
+    <text x="15" y="196" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ compute_auroc_auprc(y_true, scores): dict</text>
+    <text x="15" y="218" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ risk_coverage_analysis(): dict</text>
+    <text x="15" y="240" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ compare_with_baseline(): dict</text>
+  </g>
+  
+  <!-- Evaluators -> ReliabilityAnalyzer -->
+  <path d="M 420 840 L 530 760" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green)" />
+  <text x="440" y="790" fill="#047857" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600">stability scores</text>
+  
+  <path d="M 1020 840 L 910 760" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green)" />
+  <text x="965" y="820" fill="#047857" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="600" text-anchor="middle">localization scores</text>
+  
+  <!-- ROW 5: ResultsDashboard -->
+  <!-- Class 9: ResultsDashboard -->
+  <g transform="translate(510, 890)">
+    <rect width="420" height="210" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="2" filter="url(#shadow)" />
+    <rect width="420" height="35" rx="8" fill="#d97706" />
+    <rect y="25" width="420" height="10" fill="#d97706" />
+    <text x="210" y="24" fill="#ffffff" font-family="'Segoe UI', Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">ResultsDashboard</text>
+    
+    <text x="15" y="58" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- app_mode: str = "clinical_audit"</text>
+    <text x="15" y="78" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- uploaded_scan: np.ndarray</text>
+    <text x="15" y="98" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">- active_result: dict</text>
+    
+    <line x1="0" y1="110" x2="420" y2="110" stroke="#cbd5e1" stroke-width="1.2" />
+    
+    <text x="15" y="132" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ render_upload_interface(): void</text>
+    <text x="15" y="154" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ display_prediction_panel(pred, conf): void</text>
+    <text x="15" y="176" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ display_heatmaps_and_mask_comparison(): void</text>
+    <text x="15" y="198" fill="#0f172a" font-family="'Courier New', monospace" font-size="11.5">+ render_reliability_badge_and_export(): void</text>
+  </g>
+  
+  <!-- Connector: ReliabilityAnalyzer -> ResultsDashboard -->
+  <path d="M 720 820 L 720 890" stroke="#334155" stroke-width="2" marker-end="url(#arrow)" />
+  <text x="790" y="860" fill="#475569" font-family="'Segoe UI', Arial, sans-serif" font-size="11">sends findings</text>
+  
+</svg>
