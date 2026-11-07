@@ -1,0 +1,295 @@
+================================================================================
+BRAIN TUMOUR DATASETS - DOWNLOAD LINKS
+================================================================================
+
+Evidence-Aware Brain Tumour Classification System
+Required: MRI images + Segmentation masks (for localization evaluation)
+
+================================================================================
+🏆 RECOMMENDED DATASETS
+================================================================================
+
+1. FIGSHARE BRAIN TUMOR DATASET ⭐ (Quick Start)
+   Link: https://figshare.com/articles/dataset/brain_tumor_dataset/1512427
+   
+   Download: https://figshare.com/ndownloader/files/3381289
+   
+   Classes: Glioma (1426), Meningioma (708), Pituitary (930)
+   Total: 3,064 images
+   Format: JPG
+   Size: ~150MB
+   Masks: ❌ Not included (need to create or download BraTS)
+   
+   ✓ Best for: Quick prototyping, initial development
+   ✓ Easy download, pre-organized by class
+
+
+2. BraTS (Brain Tumor Segmentation Challenge) ⭐⭐⭐ (With Real Masks)
+   Link: http://braintumorsegmentation.org/
+   Registration: https://www.synapse.org/#!Synapse:syn25829067
+   
+   Alternative: https://www.med.upenn.edu/cbica/brats2021/
+   
+   Classes: Multiple glioma subtypes with detailed segmentation
+   Total: 2,000+ multi-modal scans
+   Format: NIfTI (.nii.gz)
+   Size: ~50GB
+   Masks: ✅ Expert annotations included
+   
+   ✓ Best for: Final production system, clinical validation
+   ✓ Gold standard dataset with expert masks
+   ⚠ Requires registration and approval (1-2 days)
+
+
+3. KAGGLE BRAIN MRI DATASET (Large, No Masks)
+   Link: https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset
+   
+   Kaggle command:
+   kaggle datasets download -d masoudnickparvar/brain-tumor-mri-dataset
+   
+   Classes: Glioma, Meningioma, Pituitary, No Tumor
+   Total: 7,023 images
+   Format: JPG
+   Size: ~100MB
+   Masks: ❌ Not included
+   
+   ✓ Best for: Classification only (without localization)
+   ✓ Largest dataset, pre-split train/test
+
+
+4. LGG SEGMENTATION DATASET (Glioma with Masks)
+   Link: https://www.kaggle.com/datasets/mateuszbuda/lgg-mri-segmentation
+   
+   Kaggle command:
+   kaggle datasets download -d mateuszbuda/lgg-mri-segmentation
+   
+   Classes: Lower Grade Glioma only
+   Total: 3,929 images
+   Format: TIFF
+   Size: ~2GB
+   Masks: ✅ Segmentation included
+   
+   ✓ Best for: Glioma-specific analysis with masks
+   ⚠ Only one tumor type (no meningioma/pituitary)
+
+
+5. BRAIN MRI IMAGES FOR TUMOR DETECTION (Small)
+   Link: https://www.kaggle.com/datasets/navoneel/brain-mri-images-for-brain-tumor-detection
+   
+   Total: 253 images
+   Classes: Tumor / No Tumor (binary)
+   ⚠ Too small for deep learning
+
+
+================================================================================
+📥 DOWNLOAD METHODS
+================================================================================
+
+METHOD 1: Automated Script (Figshare)
+--------------------------------------
+python scripts/download_dataset.py --source figshare --output data/brain_tumours
+python scripts/download_dataset.py --create-dummy-masks
+
+
+METHOD 2: Manual Download (Figshare)
+-------------------------------------
+1. Visit: https://figshare.com/articles/dataset/brain_tumor_dataset/1512427
+2. Click "Download all" button
+3. Extract to: data/brain_tumours/
+4. Organize structure (see below)
+
+
+METHOD 3: Kaggle CLI (Kaggle Datasets)
+---------------------------------------
+# Install Kaggle CLI
+pip install kaggle
+
+# Setup API key (from Kaggle account settings)
+# Place kaggle.json in ~/.kaggle/ (Linux/Mac) or C:\Users\<username>\.kaggle\ (Windows)
+
+# Download dataset
+kaggle datasets download -d masoudnickparvar/brain-tumor-mri-dataset
+unzip brain-tumor-mri-dataset.zip -d data/brain_tumours
+
+
+METHOD 4: BraTS Registration (Expert Masks)
+--------------------------------------------
+1. Create account: https://www.synapse.org/
+2. Navigate to: https://www.synapse.org/#!Synapse:syn25829067
+3. Request access (approval in 1-2 days)
+4. Download via Synapse web interface or CLI:
+   
+   pip install synapseclient
+   synapse login -u username -p password
+   synapse get -r syn25829067
+
+
+================================================================================
+📁 EXPECTED DIRECTORY STRUCTURE
+================================================================================
+
+data/brain_tumours/
+├── glioma/
+│   ├── images/
+│   │   ├── patient001_slice01.jpg
+│   │   ├── patient001_slice02.jpg
+│   │   └── ...
+│   └── masks/
+│       ├── patient001_slice01.jpg  # Binary mask (white=tumor, black=background)
+│       ├── patient001_slice02.jpg
+│       └── ...
+├── meningioma/
+│   ├── images/
+│   └── masks/
+└── pituitary/
+    ├── images/
+    └── masks/
+
+IMPORTANT: Each image MUST have corresponding mask with SAME filename!
+
+
+================================================================================
+🎭 CREATING MASKS (If Not Included)
+================================================================================
+
+OPTION A: Dummy Masks (Testing Only)
+-------------------------------------
+python scripts/download_dataset.py --create-dummy-masks
+
+⚠ Only for development! Not accurate for real evaluation.
+
+
+OPTION B: Download BraTS (Real Expert Masks)
+---------------------------------------------
+See METHOD 4 above - best option for production system.
+
+
+OPTION C: Grad-CAM Pseudo-Masks
+--------------------------------
+# Train model first
+python main.py --mode train
+
+# Generate pseudo-masks from Grad-CAM
+python scripts/generate_pseudo_masks.py
+
+⚠ Less accurate than expert annotations.
+
+
+OPTION D: Manual Annotation
+----------------------------
+Use LabelMe tool: https://github.com/wkentaro/labelme
+
+pip install labelme
+labelme data/brain_tumours/glioma/images/
+
+⚠ Very time-consuming (hours of work).
+
+
+================================================================================
+✅ VERIFICATION
+================================================================================
+
+After downloading, verify structure:
+
+python -c "
+from pathlib import Path
+import os
+
+data_dir = Path('data/brain_tumours')
+classes = ['glioma', 'meningioma', 'pituitary']
+
+for cls in classes:
+    img_dir = data_dir / cls / 'images'
+    mask_dir = data_dir / cls / 'masks'
+    
+    if img_dir.exists():
+        n_images = len(list(img_dir.glob('*.*')))
+        n_masks = len(list(mask_dir.glob('*.*'))) if mask_dir.exists() else 0
+        print(f'{cls}: {n_images} images, {n_masks} masks')
+    else:
+        print(f'{cls}: NOT FOUND')
+"
+
+Expected output:
+glioma: 1426 images, 1426 masks
+meningioma: 708 images, 708 masks
+pituitary: 930 images, 930 masks
+
+
+================================================================================
+💾 DISK SPACE REQUIREMENTS
+================================================================================
+
+Figshare Dataset:      150 MB (images only)
+With Dummy Masks:      200 MB
+Kaggle MRI Dataset:    100 MB
+LGG Segmentation:      2 GB (with masks)
+BraTS Dataset:         50 GB (multi-modal with masks)
+
+Recommended: 5 GB free space for development
+
+
+================================================================================
+🚀 QUICK START (Recommended Path)
+================================================================================
+
+FOR IMMEDIATE DEVELOPMENT:
+-------------------------
+1. Download Figshare: https://figshare.com/ndownloader/files/3381289
+2. Extract to data/brain_tumours/
+3. Create dummy masks: python scripts/download_dataset.py --create-dummy-masks
+4. Start training: python main.py --mode train
+
+FOR FINAL PROJECT SUBMISSION:
+-----------------------------
+1. Register for BraTS: https://www.synapse.org/#!Synapse:syn25829067
+2. Wait for approval (1-2 days)
+3. Download BraTS with expert masks
+4. Preprocess NIfTI to PNG slices
+5. Train with real data: python main.py --mode train
+
+
+================================================================================
+📞 SUPPORT
+================================================================================
+
+Dataset issues? Check:
+1. DATASETS.md - Detailed dataset guide
+2. scripts/download_dataset.py - Automated download
+3. QUICKSTART.md - Setup instructions
+
+Can't download? Use alternative sources:
+- Google Drive mirrors (search "brain tumor dataset figshare")
+- Academic torrents
+- Contact dataset authors
+
+
+================================================================================
+🔗 ADDITIONAL RESOURCES
+================================================================================
+
+Papers:
+- Cheng et al. (2016): https://www.nature.com/articles/sdata2017117
+- BraTS Challenge: https://arxiv.org/abs/1811.02629
+
+Tools:
+- Medical Image Viewer: https://www.itksnap.org/
+- DICOM Processing: https://pydicom.github.io/
+- Nibabel (NIfTI): https://nipy.org/nibabel/
+
+Related Datasets:
+- TCIA Brain Collections: https://www.cancerimagingarchive.net/
+- OpenNeuro: https://openneuro.org/
+
+
+================================================================================
+SUMMARY
+================================================================================
+
+Quick Start:   Figshare (150MB, no masks) + Dummy masks
+Best Quality:  BraTS (50GB, expert masks)
+Balanced:      LGG Segmentation (2GB, glioma with masks)
+
+Recommendation: Start with Figshare for development, move to BraTS for final evaluation.
+
+================================================================================
