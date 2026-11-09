@@ -11,45 +11,38 @@ import shutil
 
 def download_figshare_dataset(output_dir="data/brain_tumours"):
     """
-    Download Brain Tumor Dataset from Figshare
+    Download Brain Tumor Dataset from Kaggle (Most Reliable)
     """
     print("=" * 60)
-    print("DOWNLOADING FIGSHARE BRAIN TUMOR DATASET")
+    print("DOWNLOADING BRAIN TUMOR DATASET FROM KAGGLE")
     print("=" * 60)
     
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
     
-    # Figshare download URLs
-    urls = {
-        "training": "https://figshare.com/ndownloader/files/3381289",
-        # Add more if available
-    }
+    print("\n⚠ MANUAL DOWNLOAD REQUIRED:")
+    print("=" * 60)
+    print("\n1. Visit: https://www.kaggle.com/datasets/sartajbhuvaji/brain-tumor-classification-mri")
+    print("2. Click 'Download' button (requires Kaggle account)")
+    print("3. Extract the downloaded zip file")
+    print("4. Move contents to:", output_path.absolute())
     
-    for name, url in urls.items():
-        print(f"\nDownloading {name} dataset...")
-        zip_path = output_path / f"{name}.zip"
-        
-        try:
-            urllib.request.urlretrieve(url, zip_path)
-            print(f"✓ Downloaded to {zip_path}")
-            
-            # Extract
-            print(f"Extracting {name}...")
-            with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-                zip_ref.extractall(output_path)
-            print(f"✓ Extracted to {output_path}")
-            
-            # Clean up zip
-            os.remove(zip_path)
-            print(f"✓ Cleaned up {zip_path}")
-            
-        except Exception as e:
-            print(f"✗ Error downloading {name}: {e}")
-            print(f"Please download manually from: {url}")
+    print("\n--- OR USE KAGGLE CLI ---")
+    print("\nRun these commands:")
+    print("  pip install kaggle")
+    print("  kaggle datasets download -d sartajbhuvaji/brain-tumor-classification-mri")
+    print(f"  unzip brain-tumor-classification-mri.zip -d {output_dir}")
     
-    print("\n✓ Dataset download complete!")
-    print(f"Location: {output_path.absolute()}")
+    print("\n--- KAGGLE API SETUP ---")
+    print("\n1. Go to: https://www.kaggle.com/settings")
+    print("2. Scroll to 'API' section")
+    print("3. Click 'Create New API Token'")
+    print("4. Save kaggle.json to:")
+    print("   Windows: C:\\Users\\<username>\\.kaggle\\kaggle.json")
+    print("   Linux/Mac: ~/.kaggle/kaggle.json")
+    
+    print("\n✓ Follow instructions above to download dataset")
+    print(f"Target location: {output_path.absolute()}")
 
 
 def organize_dataset_structure(source_dir, output_dir="data/brain_tumours"):
