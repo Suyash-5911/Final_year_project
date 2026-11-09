@@ -1,230 +1,390 @@
 """
-Dataset Loader for Brain Tumour MRI Images
-Handles patient-wise data splitting and mask alignment
+Dataset loader for BRISC Brain Tumor Dataset.
+
+Supports both classification and segmentation tasks with train/test splits.
 """
-import os
-import numpy as np
+
 from pathlib import Path
-from typing import Dict, List, Tuple, Optional
+from typing import Optional, Tuple, Union, Literal
+from PIL import Image
 import torch
 from torch.utils.data import Dataset, DataLoader
-from PIL import Image
-import pandas as pd
+import numpy as np
 
 
-class BrainTumourDataset(Dataset):
-    """Brain Tumour MRI Dataset with Masks"""
+class BRISCDataset(Dataset):
+    """
+    BRISC Brain Tumor Dataset loader.
+    
+    Supports:
+    - Classification task: 3 tumor types (glioma, meningioma, pituitary) or 4 classes with no_tumor
+    - Segmentation task: images with expert-annotated masks
+    - Train/test splits
+    
+    Args:
+        root_dir: Path to brisc2025/ directory
+        task: Either 'classification' or 'segmentation'
+        split: Either 'train' or 'test'
+        transform: Optional transform to apply to images
+        include_no_tumor: Whether to include no_tumor class (classification only)
+        return_path: Whether to return image path along with data
+    """
     
     def __init__(
-        self, 
-        image_paths: List[Path], 
-        mask_paths: List[Path],
-        labels: List[int],
-        transform=None
+        self,
+        root_dir: Union[str, Path],
+        task: Literal['classification', 'segmentation'] = 'classification',
+        split: Literal['train', 'test'] = 'train',
+        transform: Optional[callable] = None,
+        include_no_tumor: bool = False,
+        return_path: bool = False,
     ):
-        self.image_paths = image_paths
-        self.mask_paths = mask_paths
-        self.labels = labels
+        self.root = Path(root_dir)
+        self.task = task
+        self.split = split
         self.transform = transform
+        self.include_no_tumor = include_no_tumor
+        self.return_path = return_path
         
-        assert len(image_paths) == len(mask_paths) == len(labels), \
-            "Image, mask, and label counts must match"
+        # Define class mappings (3 tumor types by default)
+        if include_no_tumor:
+            self.classes = ['glioma', 'meningioma', 'pituitary', 'no_tumor']
+            self.num_classes = 4
+        else:
+            self.classes = ['glioma', 'meningioma', 'pituitary']
+            self.num_classes = 3
+        
+        self.class_to_idx = {cls_name: idx for idx, cls_name in enumerate(self.classes)}
+        
+        # Load dataset samples
+        if task == 'classification':
+            self._load_classification_data()
+        elif task == 'segmentation':
+            self._load_segmentation_data()
+        else:
+            raise ValueError(f"Invalid task: {task}. Must be 'classification' or 'segmentation'")
+        
+        if len(self.samples) == 0:
+            raise RuntimeError(f"No samples found in {self.data_dir}")
+    
+    def _load_classification_data(self):
+        """Load classification task images and labels."""
+        self.data_dir = self.root / 'classification_task' / self.split
+        self.samples = []
+        
+        if not self.data_dir.exists():
+            raise FileNotFoundError(f"Classification directory not found: {self.data_dir}")
+        
+        for class_name in self.classes:
+            class_dir = self.data_dir / class_name
+            
+            if not class_dir.exists():
+                print(f"Warning: Class directory not found: {class_dir}")
+                continue
+            
+            class_idx = self.class_to_idx[class_name]
+            
+            # Load all .jpg images from class directory
+            for img_path in sorted(class_dir.glob('*.jpg')):
+                self.samples.append({
+                    'image_path': img_path,
+                    'label': class_idx,
+                    'class_name': class_name,
+                })
+        
+        print(f"Loaded {len(self.samples)} classification samples from {self.split} split")
+    
+    def _load_segmentation_data(self):
+        """Load segmentation task images and masks."""
+        self.data_dir = self.root / 'segmentation_task' / self.split
+        self.samples = []
+        
+        img_dir = self.data_dir / 'images'
+        mask_dir = self.data_dir / 'masks'
+        
+        if not img_dir.exists():
+            raise FileNotFoundError(f"Image directory not found: {img_dir}")
+        if not mask_dir.exists():
+            raise FileNotFoundError(f"Mask directory not found: {mask_dir}")
+        
+        # Load image-mask pairs
+        for img_path in sorted(img_dir.glob('*.jpg')):
+            # Corresponding mask has same basename but .png extension
+            mask_name = img_path.stem + '.png'
+            mask_path = mask_dir / mask_name
+            
+            if mask_path.exists():
+                self.samples.append({
+                    'image_path': img_path,
+                    'mask_path': mask_path,
+                    'filename': img_path.stem,
+                })
+            else:
+                print(f"Warning: Mask not found for {img_path.name}")
+        
+        print(f"Loaded {len(self.samples)} segmentation samples from {self.split} split")
     
     def __len__(self) -> int:
-        return len(self.image_paths)
+        """Return number of samples in dataset."""
+        return len(self.samples)
     
-    def __getitem__(self, idx: int) -> Dict[str, torch.Tensor]:
-        # Load image
-        image = Image.open(self.image_paths[idx]).convert('RGB')
+    def __getitem__(self, idx: int) -> Union[Tuple, dict]:
+        """
+        Get a sample from the dataset.
         
-        # Load mask
-        mask = Image.open(self.mask_paths[idx]).convert('L')
+        Returns:
+            Classification task: (image, label) or (image, label, path)
+            Segmentation task: (image, mask) or (image, mask, path)
+        """
+        sample = self.samples[idx]
         
-        # Apply transforms
-        if self.transform:
-            image, mask = self.transform(image, mask)
+        if self.task == 'classification':
+            # Load image
+            image = Image.open(sample['image_path']).convert('RGB')
+            label = sample['label']
+            
+            # Apply transforms
+            if self.transform is not None:
+                image = self.transform(image)
+            
+            if self.return_path:
+                return image, label, str(sample['image_path'])
+            else:
+                return image, label
         
-        return {
-            'image': image,
-            'mask': mask,
-            'label': torch.tensor(self.labels[idx], dtype=torch.long),
-            'image_path': str(self.image_paths[idx]),
-            'mask_path': str(self.mask_paths[idx])
-        }
+        else:  # segmentation
+            # Load image and mask
+            image = Image.open(sample['image_path']).convert('RGB')
+            mask = Image.open(sample['mask_path']).convert('L')  # Grayscale
+            
+            # Apply transforms (should handle both image and mask)
+            if self.transform is not None:
+                image, mask = self.transform(image, mask)
+            
+            if self.return_path:
+                return image, mask, str(sample['image_path'])
+            else:
+                return image, mask
+    
+    def get_class_distribution(self) -> dict:
+        """Get distribution of samples per class (classification only)."""
+        if self.task != 'classification':
+            raise ValueError("Class distribution only available for classification task")
+        
+        distribution = {cls_name: 0 for cls_name in self.classes}
+        
+        for sample in self.samples:
+            class_name = sample['class_name']
+            distribution[class_name] += 1
+        
+        return distribution
+    
+    def get_sample_weights(self) -> torch.Tensor:
+        """
+        Calculate sample weights for balanced training (classification only).
+        
+        Returns:
+            Tensor of weights for each sample (inverse class frequency)
+        """
+        if self.task != 'classification':
+            raise ValueError("Sample weights only available for classification task")
+        
+        # Count samples per class
+        class_counts = torch.zeros(self.num_classes)
+        for sample in self.samples:
+            class_counts[sample['label']] += 1
+        
+        # Calculate weights (inverse frequency)
+        class_weights = 1.0 / class_counts
+        
+        # Assign weight to each sample
+        sample_weights = torch.zeros(len(self.samples))
+        for idx, sample in enumerate(self.samples):
+            sample_weights[idx] = class_weights[sample['label']]
+        
+        return sample_weights
 
 
 class DatasetLoader:
     """
-    Manages dataset loading with patient-wise stratified splitting
+    High-level dataset loader with DataLoader creation.
+    
+    Provides convenient methods to create PyTorch DataLoaders for training
+    and evaluation with appropriate configurations.
+    
+    Args:
+        root_dir: Path to brisc2025/ directory
+        batch_size: Batch size for DataLoader
+        num_workers: Number of worker processes for data loading
+        pin_memory: Whether to pin memory for faster GPU transfer
+        include_no_tumor: Whether to include no_tumor class
     """
     
     def __init__(
-        self, 
-        dataset_dir: str,
-        train_split: float = 0.7,
-        val_split: float = 0.15,
-        test_split: float = 0.15,
-        random_seed: int = 42
-    ):
-        self.dataset_dir = Path(dataset_dir)
-        self.train_split = train_split
-        self.val_split = val_split
-        self.test_split = test_split
-        self.random_seed = random_seed
-        
-        assert abs(train_split + val_split + test_split - 1.0) < 1e-6, \
-            "Splits must sum to 1.0"
-        
-        self.image_mask_pairs = []
-        self.patient_splits = {'train': [], 'val': [], 'test': []}
-    
-    def load_slices_and_masks(self) -> List[Tuple[Path, Path, int, str]]:
-        """
-        Load all image-mask pairs from dataset directory
-        Returns: List of (image_path, mask_path, label, patient_id)
-        """
-        pairs = []
-        
-        # Expected structure: dataset_dir/class_name/images/ and dataset_dir/class_name/masks/
-        for class_idx, class_name in enumerate(['glioma', 'meningioma', 'pituitary']):
-            class_dir = self.dataset_dir / class_name
-            if not class_dir.exists():
-                continue
-            
-            images_dir = class_dir / 'images'
-            masks_dir = class_dir / 'masks'
-            
-            if images_dir.exists() and masks_dir.exists():
-                image_files = sorted(images_dir.glob('*.png')) + \
-                             sorted(images_dir.glob('*.jpg')) + \
-                             sorted(images_dir.glob('*.jpeg'))
-                
-                for img_path in image_files:
-                    # Corresponding mask with same filename
-                    mask_path = masks_dir / img_path.name
-                    
-                    if mask_path.exists():
-                        # Extract patient ID from filename (assuming format: patientXXX_slice_YY.png)
-                        patient_id = img_path.stem.split('_')[0]
-                        pairs.append((img_path, mask_path, class_idx, patient_id))
-        
-        self.image_mask_pairs = pairs
-        return pairs
-    
-    def get_patient_stratified_split(self) -> Dict[str, List[Tuple]]:
-        """
-        Perform patient-wise stratified split
-        Ensures no patient appears in multiple splits
-        """
-        np.random.seed(self.random_seed)
-        
-        # Group by patient and class
-        from collections import defaultdict
-        patients_by_class = defaultdict(list)
-        
-        for img, mask, label, patient_id in self.image_mask_pairs:
-            patients_by_class[label].append(patient_id)
-        
-        # Get unique patients per class
-        for label in patients_by_class:
-            patients_by_class[label] = list(set(patients_by_class[label]))
-        
-        # Split patients per class
-        splits = {'train': [], 'val': [], 'test': []}
-        
-        for label, patients in patients_by_class.items():
-            np.random.shuffle(patients)
-            n = len(patients)
-            
-            train_end = int(n * self.train_split)
-            val_end = train_end + int(n * self.val_split)
-            
-            splits['train'].extend(patients[:train_end])
-            splits['val'].extend(patients[train_end:val_end])
-            splits['test'].extend(patients[val_end:])
-        
-        self.patient_splits = splits
-        
-        # Now assign image-mask pairs to splits based on patient ID
-        split_data = {'train': [], 'val': [], 'test': []}
-        
-        for img, mask, label, patient_id in self.image_mask_pairs:
-            for split_name, patient_list in splits.items():
-                if patient_id in patient_list:
-                    split_data[split_name].append((img, mask, label, patient_id))
-                    break
-        
-        return split_data
-    
-    def verify_mask_alignment(self, image_path: Path, mask_path: Path) -> bool:
-        """Verify that image and mask have same dimensions"""
-        try:
-            img = Image.open(image_path)
-            mask = Image.open(mask_path)
-            return img.size == mask.size
-        except Exception as e:
-            print(f"Error verifying alignment: {e}")
-            return False
-    
-    def get_data_loader(
-        self, 
-        split: str,
+        self,
+        root_dir: Union[str, Path],
         batch_size: int = 32,
-        transform=None,
-        shuffle: bool = True,
-        num_workers: int = 4
+        num_workers: int = 4,
+        pin_memory: bool = True,
+        include_no_tumor: bool = False,
+    ):
+        self.root_dir = Path(root_dir)
+        self.batch_size = batch_size
+        self.num_workers = num_workers
+        self.pin_memory = pin_memory
+        self.include_no_tumor = include_no_tumor
+        
+        # Verify dataset exists
+        if not self.root_dir.exists():
+            raise FileNotFoundError(f"Dataset directory not found: {self.root_dir}")
+    
+    def get_classification_loader(
+        self,
+        split: Literal['train', 'test'],
+        transform: Optional[callable] = None,
+        shuffle: Optional[bool] = None,
+        return_path: bool = False,
     ) -> DataLoader:
         """
-        Get DataLoader for specified split
+        Create DataLoader for classification task.
+        
+        Args:
+            split: 'train' or 'test'
+            transform: Transform to apply to images
+            shuffle: Whether to shuffle data (defaults to True for train, False for test)
+            return_path: Whether to return image paths
+        
+        Returns:
+            PyTorch DataLoader
         """
-        split_data = self.get_patient_stratified_split()
+        if shuffle is None:
+            shuffle = (split == 'train')
         
-        if split not in split_data:
-            raise ValueError(f"Invalid split: {split}. Must be 'train', 'val', or 'test'")
-        
-        data = split_data[split]
-        
-        if len(data) == 0:
-            raise ValueError(f"No data found for split: {split}")
-        
-        image_paths = [d[0] for d in data]
-        mask_paths = [d[1] for d in data]
-        labels = [d[2] for d in data]
-        
-        dataset = BrainTumourDataset(
-            image_paths=image_paths,
-            mask_paths=mask_paths,
-            labels=labels,
-            transform=transform
+        dataset = BRISCDataset(
+            root_dir=self.root_dir,
+            task='classification',
+            split=split,
+            transform=transform,
+            include_no_tumor=self.include_no_tumor,
+            return_path=return_path,
         )
         
-        dataloader = DataLoader(
+        loader = DataLoader(
             dataset,
-            batch_size=batch_size,
+            batch_size=self.batch_size,
             shuffle=shuffle,
-            num_workers=num_workers,
-            pin_memory=True
+            num_workers=self.num_workers,
+            pin_memory=self.pin_memory,
+            drop_last=(split == 'train'),  # Drop last incomplete batch in training
         )
         
-        return dataloader
+        return loader
     
-    def get_dataset_statistics(self) -> Dict:
-        """Get statistics about the dataset"""
-        split_data = self.get_patient_stratified_split()
+    def get_segmentation_loader(
+        self,
+        split: Literal['train', 'test'],
+        transform: Optional[callable] = None,
+        shuffle: Optional[bool] = None,
+        return_path: bool = False,
+    ) -> DataLoader:
+        """
+        Create DataLoader for segmentation task.
         
-        stats = {
-            'total_samples': len(self.image_mask_pairs),
-            'train_samples': len(split_data['train']),
-            'val_samples': len(split_data['val']),
-            'test_samples': len(split_data['test']),
-            'class_distribution': {}
-        }
+        Args:
+            split: 'train' or 'test'
+            transform: Transform to apply to images and masks
+            shuffle: Whether to shuffle data (defaults to True for train, False for test)
+            return_path: Whether to return image paths
         
-        # Count samples per class
-        from collections import Counter
-        for split_name, data in split_data.items():
-            labels = [d[2] for d in data]
-            class_counts = Counter(labels)
-            stats['class_distribution'][split_name] = dict(class_counts)
+        Returns:
+            PyTorch DataLoader
+        """
+        if shuffle is None:
+            shuffle = (split == 'train')
         
-        return stats
+        dataset = BRISCDataset(
+            root_dir=self.root_dir,
+            task='segmentation',
+            split=split,
+            transform=transform,
+            return_path=return_path,
+        )
+        
+        loader = DataLoader(
+            dataset,
+            batch_size=self.batch_size,
+            shuffle=shuffle,
+            num_workers=self.num_workers,
+            pin_memory=self.pin_memory,
+            drop_last=False,  # Keep all samples for segmentation
+        )
+        
+        return loader
+    
+    def get_data_loader(
+        self,
+        task: Literal['classification', 'segmentation'],
+        split: Literal['train', 'test'],
+        transform: Optional[callable] = None,
+        shuffle: Optional[bool] = None,
+        return_path: bool = False,
+    ) -> DataLoader:
+        """
+        Generic method to create DataLoader for any task.
+        
+        Args:
+            task: 'classification' or 'segmentation'
+            split: 'train' or 'test'
+            transform: Transform to apply
+            shuffle: Whether to shuffle data
+            return_path: Whether to return image paths
+        
+        Returns:
+            PyTorch DataLoader
+        """
+        if task == 'classification':
+            return self.get_classification_loader(split, transform, shuffle, return_path)
+        elif task == 'segmentation':
+            return self.get_segmentation_loader(split, transform, shuffle, return_path)
+        else:
+            raise ValueError(f"Invalid task: {task}")
+    
+    def print_dataset_info(self):
+        """Print statistics about the dataset."""
+        print("=" * 70)
+        print("BRISC DATASET INFORMATION")
+        print("=" * 70)
+        
+        # Classification statistics
+        print("\n📊 CLASSIFICATION TASK:")
+        for split in ['train', 'test']:
+            try:
+                dataset = BRISCDataset(
+                    self.root_dir,
+                    task='classification',
+                    split=split,
+                    include_no_tumor=self.include_no_tumor,
+                )
+                distribution = dataset.get_class_distribution()
+                
+                print(f"\n  {split.upper()} Split: {len(dataset)} images")
+                for class_name, count in distribution.items():
+                    percentage = (count / len(dataset)) * 100
+                    print(f"    - {class_name:12s}: {count:4d} ({percentage:5.2f}%)")
+            except Exception as e:
+                print(f"  Error loading {split} split: {e}")
+        
+        # Segmentation statistics
+        print("\n🎯 SEGMENTATION TASK:")
+        for split in ['train', 'test']:
+            try:
+                dataset = BRISCDataset(
+                    self.root_dir,
+                    task='segmentation',
+                    split=split,
+                )
+                print(f"  {split.upper()} Split: {len(dataset)} image-mask pairs")
+            except Exception as e:
+                print(f"  Error loading {split} split: {e}")
+        
+        print("\n" + "=" * 70)

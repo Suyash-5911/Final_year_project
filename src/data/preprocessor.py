@@ -1,149 +1,321 @@
 """
-Image Preprocessing and Augmentation
-Handles normalization, resizing, and synchronized augmentation
+Image preprocessing utilities for brain tumor MRI images.
+
+Provides resizing, normalization, and conversion utilities compatible
+with PyTorch and PIL images.
 """
-import numpy as np
+
+from typing import Union, Tuple
 import torch
-import torchvision.transforms as transforms
 import torchvision.transforms.functional as TF
+from torchvision import transforms
 from PIL import Image
-from typing import Tuple, Optional
-import random
+import numpy as np
 
 
 class Preprocessor:
     """
-    Handles preprocessing of MRI images and masks
+    Image preprocessing pipeline for brain tumor MRI images.
+    
+    Handles:
+    - Resizing to target dimensions
+    - Normalization using ImageNet statistics (for transfer learning)
+    - Tensor conversion
+    - Mask preprocessing
+    
+    Args:
+        image_size: Target size for images (height, width) or single int for square
+        mean: Mean values for normalization (RGB channels)
+        std: Standard deviation for normalization (RGB channels)
+        use_imagenet_stats: Whether to use ImageNet statistics (recommended for pretrained models)
     """
     
     def __init__(
         self,
-        target_size: Tuple[int, int] = (224, 224),
-        normalize_mean: Tuple[float, float, float] = (0.485, 0.456, 0.406),
-        normalize_std: Tuple[float, float, float] = (0.229, 0.224, 0.225),
-        intensity_range: Tuple[float, float] = (0, 1)
+        image_size: Union[int, Tuple[int, int]] = 224,
+        mean: Tuple[float, float, float] = None,
+        std: Tuple[float, float, float] = None,
+        use_imagenet_stats: bool = True,
     ):
-        self.target_size = target_size
-        self.norm_mean = normalize_mean
-        self.norm_std = normalize_std
-        self.intensity_range = intensity_range
+        # Handle image size
+        if isinstance(image_size, int):
+            self.image_size = (image_size, image_size)
+        else:
+            self.image_size = image_size
+        
+        # Normalization statistics
+        if use_imagenet_stats:
+            # ImageNet statistics (recommended for transfer learning)
+            self.mean = mean or (0.485, 0.456, 0.406)
+            self.std = std or (0.229, 0.224, 0.225)
+        else:
+            # Custom statistics (if provided)
+            self.mean = mean or (0.5, 0.5, 0.5)
+            self.std = std or (0.5, 0.5, 0.5)
+        
+        # Create base transforms
+        self.resize = transforms.Resize(self.image_size, interpolation=Image.BILINEAR)
+        self.to_tensor = transforms.ToTensor()
+        self.normalize = transforms.Normalize(mean=self.mean, std=self.std)
     
-    def resize(self, img: Image.Image, mask: Optional[Image.Image] = None):
-        """Resize image and mask to target size"""
-        img_resized = TF.resize(img, self.target_size, interpolation=Image.BILINEAR)
-        
-        if mask is not None:
-            mask_resized = TF.resize(mask, self.target_size, interpolation=Image.NEAREST)
-            return img_resized, mask_resized
-        
-        return img_resized
-    
-    def normalize_intensity(self, img: torch.Tensor) -> torch.Tensor:
-        """Normalize image intensities"""
-        # Convert to tensor if not already
-        if isinstance(img, Image.Image):
-            img = TF.to_tensor(img)
-        
-        # Normalize using ImageNet statistics
-        img = TF.normalize(img, mean=self.norm_mean, std=self.norm_std)
-        
-        return img
-    
-    def synchronized_augment(
-        self, 
-        img: Image.Image, 
-        mask: Image.Image,
-        apply_aug: bool = True
-    ) -> Tuple[torch.Tensor, torch.Tensor]:
+    def preprocess_image(self, image: Image.Image) -> torch.Tensor:
         """
-        Apply synchronized augmentation to image and mask
-        Ensures geometric transforms are applied identically to both
-        """
-        if apply_aug and random.random() > 0.5:
-            # Random horizontal flip
-            if random.random() > 0.5:
-                img = TF.hflip(img)
-                mask = TF.hflip(mask)
-            
-            # Random rotation (-15 to +15 degrees)
-            if random.random() > 0.5:
-                angle = random.uniform(-15, 15)
-                img = TF.rotate(img, angle, interpolation=Image.BILINEAR)
-                mask = TF.rotate(mask, angle, interpolation=Image.NEAREST)
-            
-            # Random affine transformation
-            if random.random() > 0.5:
-                angle = random.uniform(-10, 10)
-                translate = (random.randint(-10, 10), random.randint(-10, 10))
-                scale = random.uniform(0.9, 1.1)
-                shear = random.uniform(-5, 5)
-                
-                img = TF.affine(img, angle=angle, translate=translate, 
-                               scale=scale, shear=shear, interpolation=Image.BILINEAR)
-                mask = TF.affine(mask, angle=angle, translate=translate,
-                                scale=scale, shear=shear, interpolation=Image.NEAREST)
+        Preprocess a single PIL image for model input.
         
-        # Resize both
-        img, mask = self.resize(img, mask)
+        Args:
+            image: PIL Image in RGB format
+        
+        Returns:
+            Preprocessed tensor of shape (3, H, W)
+        """
+        # Resize
+        image = self.resize(image)
+        
+        # Convert to tensor [0, 1]
+        tensor = self.to_tensor(image)
+        
+        # Normalize
+        tensor = self.normalize(tensor)
+        
+        return tensor
+    
+    def preprocess_mask(self, mask: Image.Image, binarize: bool = True) -> torch.Tensor:
+        """
+        Preprocess a segmentation mask.
+        
+        Args:
+            mask: PIL Image in grayscale (L mode)
+            binarize: Whether to binarize mask (threshold at 0.5)
+        
+        Returns:
+            Preprocessed mask tensor of shape (1, H, W)
+        """
+        # Resize mask (use nearest neighbor to preserve labels)
+        mask = TF.resize(mask, self.image_size, interpolation=Image.NEAREST)
         
         # Convert to tensor
-        img_tensor = TF.to_tensor(img)
-        mask_tensor = TF.to_tensor(mask)
+        mask_tensor = self.to_tensor(mask)
         
-        # Normalize image only (not mask)
-        img_tensor = TF.normalize(img_tensor, mean=self.norm_mean, std=self.norm_std)
+        # Binarize if requested
+        if binarize:
+            mask_tensor = (mask_tensor > 0.5).float()
         
-        return img_tensor, mask_tensor
+        return mask_tensor
     
-    def to_tensor(self, img: np.ndarray) -> torch.Tensor:
-        """Convert numpy array to tensor"""
-        if isinstance(img, np.ndarray):
-            # If grayscale, add channel dimension
-            if img.ndim == 2:
-                img = np.expand_dims(img, axis=0)
-            # If HWC, convert to CHW
-            elif img.ndim == 3 and img.shape[2] in [1, 3]:
-                img = np.transpose(img, (2, 0, 1))
-            
-            return torch.from_numpy(img).float()
+    def preprocess_batch(self, images: list) -> torch.Tensor:
+        """
+        Preprocess a batch of PIL images.
         
-        return img
+        Args:
+            images: List of PIL Images
+        
+        Returns:
+            Batched tensor of shape (B, 3, H, W)
+        """
+        tensors = [self.preprocess_image(img) for img in images]
+        return torch.stack(tensors)
     
-    def denormalize(self, img_tensor: torch.Tensor) -> np.ndarray:
+    def denormalize(self, tensor: torch.Tensor) -> torch.Tensor:
         """
-        Denormalize image tensor for visualization
+        Denormalize a tensor back to [0, 1] range.
+        
+        Useful for visualization after normalization.
+        
+        Args:
+            tensor: Normalized tensor of shape (3, H, W) or (B, 3, H, W)
+        
+        Returns:
+            Denormalized tensor in [0, 1] range
         """
-        # Clone to avoid modifying original
-        img = img_tensor.clone()
+        mean = torch.tensor(self.mean).view(-1, 1, 1)
+        std = torch.tensor(self.std).view(-1, 1, 1)
         
-        # Denormalize
-        for c in range(3):
-            img[c] = img[c] * self.norm_std[c] + self.norm_mean[c]
+        # Handle batch dimension
+        if tensor.dim() == 4:
+            mean = mean.unsqueeze(0)
+            std = std.unsqueeze(0)
         
-        # Clip to [0, 1]
-        img = torch.clamp(img, 0, 1)
+        # Denormalize: x_original = x_normalized * std + mean
+        denormalized = tensor * std + mean
+        
+        # Clamp to [0, 1]
+        denormalized = torch.clamp(denormalized, 0, 1)
+        
+        return denormalized
+    
+    def tensor_to_pil(self, tensor: torch.Tensor) -> Image.Image:
+        """
+        Convert a tensor to PIL Image.
+        
+        Args:
+            tensor: Tensor of shape (3, H, W), normalized or denormalized
+        
+        Returns:
+            PIL Image in RGB mode
+        """
+        # Denormalize if needed
+        if tensor.min() < 0 or tensor.max() > 1:
+            tensor = self.denormalize(tensor)
         
         # Convert to numpy
-        img_np = img.permute(1, 2, 0).cpu().numpy()
+        array = tensor.cpu().numpy()
+        array = np.transpose(array, (1, 2, 0))  # (H, W, 3)
+        array = (array * 255).astype(np.uint8)
         
-        return img_np
+        return Image.fromarray(array, mode='RGB')
+    
+    def mask_to_pil(self, mask_tensor: torch.Tensor) -> Image.Image:
+        """
+        Convert a mask tensor to PIL Image.
+        
+        Args:
+            mask_tensor: Tensor of shape (1, H, W) or (H, W)
+        
+        Returns:
+            PIL Image in grayscale (L mode)
+        """
+        # Remove channel dimension if present
+        if mask_tensor.dim() == 3:
+            mask_tensor = mask_tensor.squeeze(0)
+        
+        # Convert to numpy
+        array = mask_tensor.cpu().numpy()
+        array = (array * 255).astype(np.uint8)
+        
+        return Image.fromarray(array, mode='L')
+    
+    def get_transform_params(self) -> dict:
+        """
+        Get preprocessing parameters.
+        
+        Useful for saving/loading configurations.
+        
+        Returns:
+            Dictionary of parameters
+        """
+        return {
+            'image_size': self.image_size,
+            'mean': self.mean,
+            'std': self.std,
+        }
 
 
-class TrainTransform:
-    """Training data transforms with augmentation"""
+class InverseNormalize:
+    """
+    Inverse normalization transform.
     
-    def __init__(self, preprocessor: Preprocessor):
-        self.preprocessor = preprocessor
+    Converts normalized tensors back to [0, 1] range for visualization.
     
-    def __call__(self, img: Image.Image, mask: Image.Image) -> Tuple[torch.Tensor, torch.Tensor]:
-        return self.preprocessor.synchronized_augment(img, mask, apply_aug=True)
+    Args:
+        mean: Mean values used in normalization
+        std: Standard deviation values used in normalization
+    """
+    
+    def __init__(
+        self,
+        mean: Tuple[float, float, float] = (0.485, 0.456, 0.406),
+        std: Tuple[float, float, float] = (0.229, 0.224, 0.225),
+    ):
+        self.mean = torch.tensor(mean).view(3, 1, 1)
+        self.std = torch.tensor(std).view(3, 1, 1)
+    
+    def __call__(self, tensor: torch.Tensor) -> torch.Tensor:
+        """Apply inverse normalization."""
+        # Move mean and std to same device as tensor
+        mean = self.mean.to(tensor.device)
+        std = self.std.to(tensor.device)
+        
+        # Handle batch dimension
+        if tensor.dim() == 4:
+            mean = mean.unsqueeze(0)
+            std = std.unsqueeze(0)
+        
+        # Denormalize
+        denormalized = tensor * std + mean
+        
+        # Clamp to [0, 1]
+        denormalized = torch.clamp(denormalized, 0, 1)
+        
+        return denormalized
 
 
-class ValTestTransform:
-    """Validation/Test transforms without augmentation"""
+def calculate_dataset_statistics(dataloader, num_batches: int = None) -> Tuple[Tuple, Tuple]:
+    """
+    Calculate mean and std of a dataset.
     
-    def __init__(self, preprocessor: Preprocessor):
-        self.preprocessor = preprocessor
+    Useful for computing custom normalization statistics instead of using ImageNet.
     
-    def __call__(self, img: Image.Image, mask: Image.Image) -> Tuple[torch.Tensor, torch.Tensor]:
-        return self.preprocessor.synchronized_augment(img, mask, apply_aug=False)
+    Args:
+        dataloader: PyTorch DataLoader
+        num_batches: Number of batches to use (None = all batches)
+    
+    Returns:
+        Tuple of (mean, std) for each channel
+    """
+    mean = 0.0
+    std = 0.0
+    total_images = 0
+    
+    for batch_idx, batch in enumerate(dataloader):
+        if num_batches is not None and batch_idx >= num_batches:
+            break
+        
+        # Extract images (handle both classification and segmentation)
+        if isinstance(batch, (list, tuple)):
+            images = batch[0]
+        else:
+            images = batch
+        
+        # Reshape to (B*C, H*W)
+        batch_samples = images.size(0)
+        images = images.view(batch_samples, images.size(1), -1)
+        
+        # Update running mean and std
+        mean += images.mean(2).sum(0)
+        std += images.std(2).sum(0)
+        total_images += batch_samples
+    
+    mean /= total_images
+    std /= total_images
+    
+    return tuple(mean.tolist()), tuple(std.tolist())
+
+
+def resize_with_padding(
+    image: Image.Image,
+    target_size: Tuple[int, int],
+    fill_color: Tuple[int, int, int] = (0, 0, 0),
+) -> Image.Image:
+    """
+    Resize image while maintaining aspect ratio with padding.
+    
+    Alternative to center cropping - preserves entire image.
+    
+    Args:
+        image: PIL Image
+        target_size: Target (height, width)
+        fill_color: RGB color for padding
+    
+    Returns:
+        Resized and padded image
+    """
+    # Calculate scaling factor
+    width, height = image.size
+    target_height, target_width = target_size
+    
+    scale = min(target_width / width, target_height / height)
+    
+    # Resize maintaining aspect ratio
+    new_width = int(width * scale)
+    new_height = int(height * scale)
+    image = image.resize((new_width, new_height), Image.BILINEAR)
+    
+    # Create new image with padding
+    padded_image = Image.new('RGB', (target_width, target_height), fill_color)
+    
+    # Paste resized image in center
+    x_offset = (target_width - new_width) // 2
+    y_offset = (target_height - new_height) // 2
+    padded_image.paste(image, (x_offset, y_offset))
+    
+    return padded_image
